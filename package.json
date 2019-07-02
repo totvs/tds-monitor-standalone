@@ -1,0 +1,31 @@
+{
+  "name": "@totvs/tds-monitor-standalone",
+  "version": "0.0.1",
+  "description": "TDS Monitor",
+  "main": "src/main/js/index.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "gulp build",
+    "clean": "gulp clean"
+  },
+  "repository": "https://github.com/totvs/tds-monitor-standalone",
+  "keywords": [
+    "tds",
+    "monitor",
+    "totvs"
+  ],
+  "author": "TOTVS",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^5.0.6",
+    "electron-builder": "^20.44.4",
+    "gulp": "^4.0.2",
+    "q": "^1.5.1",
+    "shelljs": "^0.8.3",
+    "yargs": "^13.2.4"
+  },
+  "dependencies": {
+    "@totvs/tds-languageclient": "0.0.3",
+    "@totvs/tds-monitor-frontend": "0.0.1"
+  }
+}
