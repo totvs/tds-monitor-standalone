@@ -25,7 +25,7 @@
     "yargs": "^13.2.4"
   },
   "dependencies": {
-    "@totvs/tds-languageclient": "0.0.3",
+    "@totvs/tds-languageclient": "0.0.4",
     "@totvs/tds-monitor-frontend": "0.0.1"
   }
 }
