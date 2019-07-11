@@ -12,6 +12,9 @@ window.addEventListener('DOMContentLoaded', () => {
 	}
 });
 
+window.localStorage.setItem("settings", `{
+	"servers": []
+}`);
 
 window.reload = () => {
 	getCurrentWindow().webContents.reloadIgnoringCache();
