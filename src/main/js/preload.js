@@ -3,21 +3,17 @@
 const { ipcRenderer, remote } = require('electron');
 const { getCurrentWindow } = remote;
 
+let mainWindow = getCurrentWindow();
+
 window.ipcRenderer = ipcRenderer;
 window.languageClient = require('@totvs/tds-languageclient').TdsLanguageClient.instance();
 
-if (!window.localStorage.getItem("settings")) {
-	window.localStorage.setItem("settings", `{
-		"servers": []
-	}`);
-}
-
 window.reload = () => {
-	getCurrentWindow().webContents.reloadIgnoringCache();
+	mainWindow.webContents.reloadIgnoringCache();
 };
 
 window.toggleDevTools = () => {
-	getCurrentWindow().webContents.toggleDevTools();
+	mainWindow.webContents.toggleDevTools();
 };
 
 window.addEventListener('keydown', (event) => {
@@ -29,4 +25,24 @@ window.addEventListener('keydown', (event) => {
 			window.toggleDevTools();
 			break;
 	}
+});
+
+
+
+// Load and save application settings:
+
+if (!window.localStorage.getItem("settings")) {
+	window.localStorage.setItem("settings", `{
+		"servers": []
+	}`);
+}
+
+mainWindow.on('close', function() {
+	mainWindow.webContents.executeJavaScript(`window.localStorage.getItem("settings");`)
+		.then((storage) => {
+			console.log(storage);
+			//let content = JSON.stringify(storage, null, 2);
+
+			//shelljs.ShellString(content).to(storageFile);
+		});
 });
