@@ -6,20 +6,14 @@ const { getCurrentWindow } = remote;
 window.ipcRenderer = ipcRenderer;
 window.languageClient = require('@totvs/tds-languageclient').TdsLanguageClient.instance();
 
-window.addEventListener('DOMContentLoaded', () => {
-	for (const versionType of ['chrome', 'electron', 'node']) {
-		document.getElementById(`${versionType}-version`).innerText = process.versions[versionType];
-	}
-});
-
 
 window.reload = () => {
 	getCurrentWindow().webContents.reloadIgnoringCache();
-}
+};
 
 window.toggleDevTools = () => {
 	getCurrentWindow().webContents.toggleDevTools();
-}
+};
 
 window.addEventListener('keydown', (event) => {
 	switch (event.key) {
@@ -30,4 +24,4 @@ window.addEventListener('keydown', (event) => {
 			window.toggleDevTools();
 			break;
 	}
-})
+});
