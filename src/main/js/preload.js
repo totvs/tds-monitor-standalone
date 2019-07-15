@@ -6,6 +6,11 @@ const { getCurrentWindow } = remote;
 window.ipcRenderer = ipcRenderer;
 window.languageClient = require('@totvs/tds-languageclient').TdsLanguageClient.instance();
 
+if (!window.localStorage.getItem("settings")) {
+	window.localStorage.setItem("settings", `{
+		"servers": []
+	}`);
+}
 
 window.reload = () => {
 	getCurrentWindow().webContents.reloadIgnoringCache();
