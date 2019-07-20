@@ -16,6 +16,22 @@ window.toggleDevTools = () => {
 	mainWindow.webContents.toggleDevTools();
 };
 
+window.maximize = () => {
+	mainWindow.maximize();
+};
+
+window.restore = () => {
+	mainWindow.restore();
+};
+
+window.minimize = () => {
+	mainWindow.minimize();
+};
+
+window.close = () => {
+	mainWindow.close();
+};
+
 window.addEventListener('keydown', (event) => {
 	switch (event.key) {
 		case 'F5':
@@ -26,6 +42,15 @@ window.addEventListener('keydown', (event) => {
 			break;
 	}
 });
+
+mainWindow.on('maximize', () => {
+	window.dispatchEvent(new Event('maximized'));
+});
+
+mainWindow.on('unmaximize', () => {
+	window.dispatchEvent(new Event('restored'));
+});
+
 
 
 
