@@ -11,8 +11,11 @@ function createWindow() {
 	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
+		title: 'TOTVS Monitor',
+		icon: path.join(__dirname, '..', 'resources', 'icons', 'application.ico'),
+
 		//titleBarStyle: "hidden",
-		//frame: false,
+		frame: false,
 		webPreferences: {
 			nodeIntegration: true,
 			preload: path.join(__dirname, 'preload.js')

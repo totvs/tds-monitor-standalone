@@ -86,7 +86,7 @@ module.exports = function(gulp, plugins, basedir, argv) {
 
 							linux: {
 								executableName: 'monitor',
-								category: 'Office',
+								category: 'System',
 								desktop: {
 									Name: 'TOTVS Monitor',
 									Type: 'Application',
@@ -104,19 +104,23 @@ module.exports = function(gulp, plugins, basedir, argv) {
 
 							directories: {
 								output: targetDir,
-								app: appDir,
+//								app: appDir,
 								buildResources: path.join(appDir, 'src', 'main', 'resources')
 							},
 
 							asarUnpack: [
-								'webapp.ini',
-								'webapp'
+								//'node_modules/'
+								`node_modules\@totvs\tds-languageclient\node_modules\@totvs\tds-ls\bin\${os}\*`
 							]
 						}
 					});
 				});
 		}, Q());
 	}
+
+	//
+
+
 
 	function getTargetArchs(argv) {
 		let archs = [];
