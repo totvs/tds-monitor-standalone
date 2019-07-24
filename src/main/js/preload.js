@@ -3,10 +3,16 @@
 const { ipcRenderer, remote } = require('electron');
 const { getCurrentWindow } = remote;
 
-let mainWindow = getCurrentWindow();
+let mainWindow = getCurrentWindow(),
+	pkg = require('../../../package.json');
 
 window.ipcRenderer = ipcRenderer;
 window.languageClient = require('@totvs/tds-languageclient').TdsLanguageClient.instance();
+window.versions = {
+	'main': pkg.version,
+	'@totvs/tds-languageclient': pkg.dependencies['@totvs/tds-languageclient'],
+	'@totvs/tds-monitor-frontend': pkg.dependencies['@totvs/tds-monitor-frontend']
+}
 
 window.reload = () => {
 	mainWindow.webContents.reloadIgnoringCache();
