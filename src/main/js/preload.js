@@ -39,13 +39,15 @@ window.close = () => {
 };
 
 window.addEventListener('keydown', (event) => {
-	switch (event.key) {
-		case 'F5':
-			window.reload();
-			break;
-		case 'F12':
-			window.toggleDevTools();
-			break;
+	if (event.ctrlKey && event.altKey) {
+		switch (event.key) {
+			case 'F5':
+				window.reload();
+				break;
+			case 'F12':
+				window.toggleDevTools();
+				break;
+		}
 	}
 });
 
