@@ -26,6 +26,6 @@
   },
   "dependencies": {
     "@totvs/tds-languageclient": "0.0.5",
-    "@totvs/tds-monitor-frontend": "0.0.2"
+    "@totvs/tds-monitor-frontend": "0.0.3"
   }
 }
