@@ -3,6 +3,7 @@
 let path = require('path'),
 	Q = require('q'),
 	builder = require("electron-builder"),
+	shelljs = require('shelljs'),
 	Platform = builder.Platform,
 	Arch = builder.Arch;
 
@@ -34,7 +35,14 @@ module.exports = function(gulp, plugins, basedir, argv) {
 		let identifier = `${os}-${bits}`,
 			targets = ['dir'],
 			arch = ((bits === 64) ? 'x64' : 'x86'),
-			builderArch = ((bits === 64) ? 'x64' : 'ia32');
+			builderArch = ((bits === 64) ? 'x64' : 'ia32'),
+			certificateFile = null,
+			certificatePassword = null;
+
+		if ((process.env.CERTIFICATE_FILE) && (process.env.CERTIFICATE_PASSWORD)) {
+			certificateFile = process.env.CERTIFICATE_FILE;
+			certificatePassword = process.env.CERTIFICATE_PASSWORD;
+		}
 
 		if (argv.targets) {
 			targets = argv.targets.split(',');
@@ -52,21 +60,31 @@ module.exports = function(gulp, plugins, basedir, argv) {
 					return builder.build({
 						targets: Platform[os.toUpperCase()].createTarget(target, Arch[builderArch]),
 						config: {
+							afterPack: async (context) => {
+								const bin = path.join('node_modules', '@totvs', 'tds-monitor-frontend', 'node_modules', '@totvs', 'tds-languageclient', 'node_modules', '@totvs', 'tds-ls', 'bin'),
+									intermediate = path.join('target', 'dist', identifier, '*-unpacked', 'resources', 'app.asar.unpacked'),
+									target = path.join(basedir, intermediate, bin);
+
+								shelljs.rm('-rf', target);
+							},
+
 							//appId: pkg.config.appId,
 							artifactName: `${artifactName}.\${ext}`,
 							productName: 'monitor',
 
+							/*
 							publish: {
 								provider: 'generic',
 								url: `http://code.totvs.com:8081/repository/electron/${os}`,
 								channel: channel
 							},
+							*/
 
 							win: {
 								icon: path.join('icons', 'application.ico'),
 								publisherName: 'TOTVS S/A',
-								//certificateFile: path.join(basedir, 'src', 'main', 'cert', 'TOTVS_SA.pfx'),
-								//certificatePassword: 'fr@mework@123'
+								certificateFile: certificateFile,
+								certificatePassword: certificatePassword
 							},
 							msi: {
 								perMachine: true
@@ -104,12 +122,11 @@ module.exports = function(gulp, plugins, basedir, argv) {
 
 							directories: {
 								output: targetDir,
-//								app: appDir,
+								//								app: appDir,
 								buildResources: path.join(appDir, 'src', 'main', 'resources')
 							},
 
 							asarUnpack: [
-								//'node_modules/'
 								`node_modules\@totvs\tds-languageclient\node_modules\@totvs\tds-ls\bin\${os}\*`
 							]
 						}
