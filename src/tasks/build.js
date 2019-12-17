@@ -59,6 +59,7 @@ module.exports = function(gulp, plugins, basedir, argv) {
 
 					return builder.build({
 						targets: Platform[os.toUpperCase()].createTarget(target, Arch[builderArch]),
+						publish: argv.publish ? 'always' : 'never',
 						config: {
 							afterPack: async (context) => {
 								const bin = path.join('node_modules', '@totvs', 'tds-monitor-frontend', 'node_modules', '@totvs', 'tds-languageclient', 'node_modules', '@totvs', 'tds-ls', 'bin'),
@@ -68,17 +69,13 @@ module.exports = function(gulp, plugins, basedir, argv) {
 								shelljs.rm('-rf', target);
 							},
 
-							//appId: pkg.config.appId,
+							appId: 'com.totvs.monitor',
 							artifactName: `${artifactName}.\${ext}`,
 							productName: 'monitor',
 
-							/*
 							publish: {
-								provider: 'generic',
-								url: `http://code.totvs.com:8081/repository/electron/${os}`,
-								channel: channel
+								provider: 'github'
 							},
-							*/
 
 							win: {
 								icon: path.join('icons', 'application.ico'),
