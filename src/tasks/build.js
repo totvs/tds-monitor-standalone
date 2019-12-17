@@ -65,7 +65,7 @@ module.exports = function(gulp, plugins, basedir, argv) {
 						publish: argv.publish ? 'always' : 'never',
 
 						config: {
-							appId: 'com.totvs.monitor',
+							appId: pkg.config.appId,
 							artifactName: `${artifactName}.\${ext}`,
 							productName: 'monitor',
 
@@ -139,7 +139,7 @@ module.exports = function(gulp, plugins, basedir, argv) {
 
 							directories: {
 								output: targetDir,
-								//								app: appDir,
+								//app: appDir,
 								buildResources: path.join(appDir, 'src', 'main', 'resources')
 							},
 
