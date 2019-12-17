@@ -32,16 +32,17 @@ module.exports = function(gulp, plugins, basedir, argv) {
 	};
 
 	function electronBuild(os, bits) {
-		let identifier = `${os}-${bits}`,
+		let env = process.env,
+			identifier = `${os}-${bits}`,
 			targets = ['dir'],
 			arch = ((bits === 64) ? 'x64' : 'x86'),
 			builderArch = ((bits === 64) ? 'x64' : 'ia32'),
-			certificateFile = null,
-			certificatePassword = null;
+			certificateFile = env.CERTIFICATE_FILE || env.bamboo_CERTIFICATE_FILE || null,
+			certificatePassword = env.CERTIFICATE_PASSWORD || env.bamboo_CERTIFICATE_PASSWORD ||  null;
 
-		if ((process.env.CERTIFICATE_FILE) && (process.env.CERTIFICATE_PASSWORD)) {
-			certificateFile = process.env.CERTIFICATE_FILE;
-			certificatePassword = process.env.CERTIFICATE_PASSWORD;
+		if ((certificateFile === null) || (certificatePassword === null)) {
+			certificateFile = null;
+			certificatePassword = null;
 		}
 
 		if (argv.targets) {
@@ -74,7 +75,8 @@ module.exports = function(gulp, plugins, basedir, argv) {
 							productName: 'monitor',
 
 							publish: {
-								provider: 'github'
+								provider: 'github',
+								token: env.GITHUB_TOKEN || env.bamboo_GITHUB_TOKEN
 							},
 
 							win: {
