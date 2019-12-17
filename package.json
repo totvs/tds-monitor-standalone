@@ -1,6 +1,6 @@
 {
   "name": "@totvs/tds-monitor-standalone",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "TDS Monitor",
   "main": "src/main/js/index.js",
   "scripts": {
@@ -19,6 +19,7 @@
   "devDependencies": {
     "electron": "^7.1.5",
     "electron-builder": "^21.2.0",
+    "electron-notarize": "^0.2.1",
     "gulp": "^4.0.2",
     "q": "^1.5.1",
     "shelljs": "^0.8.3",

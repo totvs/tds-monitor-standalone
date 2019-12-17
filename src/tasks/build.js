@@ -1,6 +1,6 @@
 'use strict';
 
-let path = require('path'),
+const path = require('path'),
 	Q = require('q'),
 	builder = require("electron-builder"),
 	shelljs = require('shelljs'),
@@ -8,9 +8,10 @@ let path = require('path'),
 	Arch = builder.Arch;
 
 module.exports = function(gulp, plugins, basedir, argv) {
-	let pkg = require(path.join(basedir, 'package.json')),
-		finalName = 'monitor-electron',
-		channel = 'latest';
+	const pkg = require(path.join(basedir, 'package.json')),
+		finalName = 'monitor-electron';
+
+	let channel = 'latest';
 
 	if (/\d+\.\d+\.\d+-SNAPSHOT/igm.test(pkg.version)) {
 		channel = 'snapshot';
@@ -54,14 +55,20 @@ module.exports = function(gulp, plugins, basedir, argv) {
 				.then(() => {
 					console.log(`Electron Builder ${identifier} ${target}`);
 
-					let appDir = basedir,	//path.join(basedir, 'target', 'staging', identifier),
+					const appDir = basedir,	//path.join(basedir, 'target', 'staging', identifier),
 						targetDir = path.join(basedir, 'target', 'dist', identifier),
-						artifactName = `${finalName}-\${version}-${os}-${arch}`;
+						artifactName = `${finalName}-\${version}-${os}-${arch}`,
+						resourcesBasedir = path.join(basedir, "src", "main", "resources");
 
 					return builder.build({
 						targets: Platform[os.toUpperCase()].createTarget(target, Arch[builderArch]),
 						publish: argv.publish ? 'always' : 'never',
+
 						config: {
+							appId: 'com.totvs.monitor',
+							artifactName: `${artifactName}.\${ext}`,
+							productName: 'monitor',
+
 							afterPack: async (context) => {
 								const bin = path.join('node_modules', '@totvs', 'tds-monitor-frontend', 'node_modules', '@totvs', 'tds-languageclient', 'node_modules', '@totvs', 'tds-ls', 'bin'),
 									intermediate = path.join('target', 'dist', identifier, '*-unpacked', 'resources', 'app.asar.unpacked'),
@@ -70,13 +77,11 @@ module.exports = function(gulp, plugins, basedir, argv) {
 								shelljs.rm('-rf', target);
 							},
 
-							appId: 'com.totvs.monitor',
-							artifactName: `${artifactName}.\${ext}`,
-							productName: 'monitor',
+							afterSign: path.join(resourcesBasedir, "scripts", "notarize.js"),
 
 							publish: {
 								provider: 'github',
-								token: env.GITHUB_TOKEN || env.bamboo_GITHUB_TOKEN
+								token: env.GITHUB_TOKEN || env.bamboo_GITHUB_TOKEN || null
 							},
 
 							win: {
@@ -117,6 +122,19 @@ module.exports = function(gulp, plugins, basedir, argv) {
 							},
 							rpm: {
 								compression: "bzip2"
+							},
+
+							mac: {
+								//forceCodeSigning: false
+
+								identity: env.APPLE_ID_IDENTITY || env.bamboo_APPLE_ID_IDENTITY || null,
+								hardenedRuntime: true,
+								gatekeeperAssess: false,
+								entitlements: path.join(resourcesBasedir, "plist", "entitlements.mac.plist"),
+								entitlementsInherit: path.join(resourcesBasedir, "plist", "entitlements.mac.plist")
+							},
+							dmg: {
+								sign: false
 							},
 
 							directories: {
