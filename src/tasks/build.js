@@ -39,7 +39,7 @@ module.exports = function(gulp, plugins, basedir, argv) {
 			arch = ((bits === 64) ? 'x64' : 'x86'),
 			builderArch = ((bits === 64) ? 'x64' : 'ia32'),
 			certificateFile = env.CERTIFICATE_FILE || env.bamboo_CERTIFICATE_FILE || null,
-			certificatePassword = env.CERTIFICATE_PASSWORD || env.bamboo_CERTIFICATE_PASSWORD ||  null;
+			certificatePassword = env.CERTIFICATE_PASSWORD || env.bamboo_CERTIFICATE_PASSWORD || null;
 
 		if ((certificateFile === null) || (certificatePassword === null)) {
 			certificateFile = null;
@@ -126,6 +126,9 @@ module.exports = function(gulp, plugins, basedir, argv) {
 
 							mac: {
 								//forceCodeSigning: false
+
+								cscLink: certificateFile,
+								cscKeyPassword: certificatePassword,
 
 								identity: env.APPLE_ID_IDENTITY || env.bamboo_APPLE_ID_IDENTITY || null,
 								hardenedRuntime: true,
