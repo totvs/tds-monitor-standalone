@@ -17,13 +17,13 @@
   "author": "TOTVS",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^7.1.5",
+    "electron": "^7.1.8",
     "electron-builder": "^21.2.0",
     "electron-notarize": "^0.2.1",
     "gulp": "^4.0.2",
     "q": "^1.5.1",
     "shelljs": "^0.8.3",
-    "yargs": "^15.0.2"
+    "yargs": "^15.1.0"
   },
   "dependencies": {
     "@totvs/tds-languageclient": "0.0.7",
