@@ -1,6 +1,6 @@
 {
   "name": "@totvs/tds-monitor-standalone",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "TDS Monitor",
   "main": "src/main/js/index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "yargs": "^15.1.0"
   },
   "dependencies": {
-    "@totvs/tds-languageclient": "0.0.7",
+    "@totvs/tds-languageclient": "0.0.8",
     "@totvs/tds-monitor-frontend": "0.0.7"
   },
   "config": {
