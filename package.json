@@ -1,6 +1,6 @@
 {
   "name": "@totvs/tds-monitor-standalone",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "TDS Monitor",
   "main": "src/main/js/index.js",
   "scripts": {
@@ -17,17 +17,17 @@
   "author": "TOTVS",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^8.0.0",
-    "electron-builder": "^22.3.2",
+    "electron": "^8.1.1",
+    "electron-builder": "^22.4.0",
     "electron-notarize": "^0.2.1",
     "gulp": "^4.0.2",
     "q": "^1.5.1",
     "shelljs": "^0.8.3",
-    "yargs": "^15.1.0"
+    "yargs": "^15.3.0"
   },
   "dependencies": {
-    "@totvs/tds-languageclient": "0.0.10",
-    "@totvs/tds-monitor-frontend": "0.0.10"
+    "@totvs/tds-languageclient": "0.0.11",
+    "@totvs/tds-monitor-frontend": "0.0.11"
   },
   "config": {
     "appId": "com.totvs.monitor"
