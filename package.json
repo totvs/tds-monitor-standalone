@@ -1,6 +1,6 @@
 {
   "name": "@totvs/tds-monitor-standalone",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "TDS Monitor",
   "main": "src/main/js/index.js",
   "scripts": {
