@@ -18,7 +18,7 @@
   "author": "TOTVS",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^9.0.3",
+    "electron": "^8.3.2",
     "electron-builder": "^22.7.0",
     "electron-notarize": "^0.3.0",
     "gulp": "^4.0.2",
