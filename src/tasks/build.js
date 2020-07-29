@@ -67,7 +67,7 @@ module.exports = function(gulp, plugins, basedir, argv) {
 						config: {
 							appId: pkg.config.appId,
 							artifactName: `${artifactName}.\${ext}`,
-							productName: 'monitor',
+							productName: 'TOTVS Monitor',
 
 							afterPack: async (context) => {
 								const bin = path.join('node_modules', '@totvs', 'tds-monitor-frontend', 'node_modules', '@totvs', 'tds-languageclient', 'node_modules', '@totvs', 'tds-ls', 'bin'),
@@ -102,7 +102,9 @@ module.exports = function(gulp, plugins, basedir, argv) {
 									'pt_BR', 'es_ES', 'en_US', 'ru_RU'
 								],
 								oneClick: false,
-								perMachine: true
+								perMachine: true,
+								uninstallDisplayName: 'TOTVS Monitor'
+
 								//installerSidebar: 'totvs.bmp'
 							},
 
@@ -146,8 +148,13 @@ module.exports = function(gulp, plugins, basedir, argv) {
 								buildResources: path.join(appDir, 'src', 'main', 'resources')
 							},
 
+							files: [
+								path.join('src', 'main', 'js'),
+								path.join('src', 'main', 'resources', 'icons')
+							],
+
 							asarUnpack: [
-								`node_modules\@totvs\tds-languageclient\node_modules\@totvs\tds-ls\bin\${os}\*`
+								`node_modules/@totvs/tds-languageclient/node_modules/@totvs/tds-ls/bin/${os}/*`
 							]
 						}
 					});
