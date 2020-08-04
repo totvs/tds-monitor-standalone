@@ -67,7 +67,7 @@ module.exports = function(gulp, plugins, basedir, argv) {
 						config: {
 							appId: pkg.config.appId,
 							artifactName: `${artifactName}.\${ext}`,
-							productName: 'TOTVS Monitor',
+							productName: 'totvs-monitor',
 
 							afterPack: async (context) => {
 								const bin = path.join('node_modules', '@totvs', 'tds-monitor-frontend', 'node_modules', '@totvs', 'tds-languageclient', 'node_modules', '@totvs', 'tds-ls', 'bin'),
