@@ -12,7 +12,7 @@ function createWindow() {
 		width: 800,
 		height: 600,
 		title: 'TOTVS Monitor',
-		icon: path.join(__dirname, '..', 'resources', 'icons', 'application.ico'),
+		icon: path.join(__dirname, '..', 'resources', 'icons', '1024x1024.png'),
 
 		//titleBarStyle: "hidden",
 		frame: false,
