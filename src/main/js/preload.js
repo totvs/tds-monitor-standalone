@@ -62,11 +62,13 @@ mainWindow.on('unmaximize', () => {
 	window.dispatchEvent(new Event('restored'));
 });
 
+const settingsDir = homedir();
+if (!fs.existsSync(settingsDir)) {
+	fs.mkdirSync(settingsDir, { recursive: true });
+}
 
-let settingsFile = path.join(homedir(), 'settings.json');
-
+const settingsFile = path.join(settingsDir, 'settings.json');
 if (!fs.existsSync(settingsFile)) {
-
 	let content = window.localStorage.getItem("settings");
 	if (!content) {
 		content = '{}';
