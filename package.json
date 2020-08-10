@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@totvs/tds-languageclient": "0.0.20",
-    "@totvs/tds-monitor-frontend": "0.1.9"
+    "@totvs/tds-monitor-frontend": "0.1.10"
   },
   "config": {
     "appId": "com.totvs.monitor"
