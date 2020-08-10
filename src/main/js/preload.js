@@ -2,6 +2,9 @@
 // It has the same sandbox as a Chrome extension.
 const { ipcRenderer, remote } = require('electron');
 const { getCurrentWindow } = remote;
+const fs = require('fs');
+const path = require('path');
+const { homedir } = require('./util');
 
 let mainWindow = getCurrentWindow(),
 	pkg = require('../../../package.json');
@@ -60,22 +63,33 @@ mainWindow.on('unmaximize', () => {
 });
 
 
+let settingsFile = path.join(homedir(), 'settings.json');
 
+if (!fs.existsSync(settingsFile)) {
 
-// Load and save application settings:
+	let content = window.localStorage.getItem("settings");
+	if (!content) {
+		content = '{}';
+	}
 
-if (!window.localStorage.getItem("settings")) {
-	window.localStorage.setItem("settings", `{
-		"servers": []
-	}`);
+	fs.writeFileSync(settingsFile, content, { encoding: 'utf8' });
 }
 
-mainWindow.on('close', function() {
-	mainWindow.webContents.executeJavaScript(`window.localStorage.getItem("settings");`)
-		.then((storage) => {
-			console.log(storage);
-			//let content = JSON.stringify(storage, null, 2);
+window.storage = {
+	get: function() {
+		try {
+			let data = fs.readFileSync(settingsFile, { encoding: 'utf8' });
+			return JSON.parse(data);
+		}
+		catch (ex) {
+			return {};
+		}
+	},
 
-			//shelljs.ShellString(content).to(storageFile);
-		});
-});
+	set: function(data) {
+		let content = JSON.stringify(data, null, 2);
+
+		fs.writeFileSync(settingsFile, content, { encoding: 'utf8' });
+	}
+
+}
