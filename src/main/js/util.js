@@ -1,4 +1,5 @@
 const path = require('path'),
+	os = require('os'),
 	pkg = require('../../../package.json');
 
 function homedir() {
