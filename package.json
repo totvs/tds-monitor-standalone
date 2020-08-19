@@ -1,6 +1,6 @@
 {
   "name": "@totvs/tds-monitor-standalone",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "TDS Monitor",
   "main": "src/main/js/index.js",
   "scripts": {
@@ -23,12 +23,12 @@
     "electron-notarize": "^1.0.0",
     "gulp": "^4.0.2",
     "q": "^1.5.1",
-    "shelljs": "^0.8.4",
-    "yargs": "^15.4.1"
+    "shelljs": "^0.8.4"
   },
   "dependencies": {
-    "@totvs/tds-languageclient": "0.0.20",
-    "@totvs/tds-monitor-frontend": "0.1.10"
+    "@totvs/tds-languageclient": "0.0.21",
+    "@totvs/tds-monitor-frontend": "0.1.11",
+    "yargs": "^15.4.1"
   },
   "config": {
     "appId": "com.totvs.monitor"
