@@ -2,6 +2,22 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
+const argv = require('yargs') // eslint-disable-line
+    .options('logging', {
+        alias: ['l'],
+        describe: 'Habilita o log do LS',
+        type: 'boolean',
+        default: false
+    })
+    .options('dev', {
+        alias: ['d'],
+        describe: 'Exibe as ferramentas de desenvolvedor',
+        type: 'boolean',
+        default: false
+    })
+    .argv;
+require('@totvs/tds-languageclient').TdsLanguageClient.instance({ logging: argv.logging });
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -39,7 +55,9 @@ function createWindow() {
 	//mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
 	// Open the DevTools.
-	// mainWindow.webContents.openDevTools()
+	if (argv.dev) {
+		mainWindow.webContents.openDevTools()
+	}
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', function() {
