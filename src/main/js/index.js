@@ -5,13 +5,13 @@ const path = require('path');
 const argv = require('yargs') // eslint-disable-line
     .options('logging', {
         alias: ['l'],
-        describe: 'Habilita o log do LS',
+        describe: 'Enable LS logging',
         type: 'boolean',
         default: false
     })
     .options('dev', {
         alias: ['d'],
-        describe: 'Exibe as ferramentas de desenvolvedor',
+        describe: 'Open with DevTools',
         type: 'boolean',
         default: false
     })

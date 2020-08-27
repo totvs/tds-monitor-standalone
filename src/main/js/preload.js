@@ -7,7 +7,8 @@ const path = require('path');
 const { homedir } = require('./util');
 
 let mainWindow = getCurrentWindow(),
-	pkg = require('../../../package.json');
+	pkg = require('../../../package.json'),
+	translations = {};
 
 window.ipcRenderer = ipcRenderer;
 window.languageClient = require('@totvs/tds-languageclient').TdsLanguageClient.instance();
@@ -77,6 +78,28 @@ if (!fs.existsSync(settingsFile)) {
 	fs.writeFileSync(settingsFile, content, { encoding: 'utf8' });
 }
 
+if (fs.existsSync(settingsFile)) {
+	let settingsData = fs.readFileSync(settingsFile, { encoding: 'utf8' });
+	let settings = JSON.parse(settingsData);
+	let localeCodeSetting = 'pt-br';
+	if (settings && settings.config && settings.config.language) {
+		if (settings.config.language === 'english') {
+			localeCodeSetting = 'en';
+		}
+		else if (settings.config.language === 'spanish') {
+			localeCodeSetting = 'es';
+		}
+	}
+	let nls = {};
+	if (localeCodeSetting !== 'en') {
+		let localeFile = `nls.${localeCodeSetting}.json`;
+		localeFile = path.join(__dirname, '..', 'resources', 'nls', localeFile);
+		let nlsData = fs.readFileSync(localeFile, { encoding: 'utf8' });
+		nls = JSON.parse(nlsData);
+	}
+	translations = nls;
+}
+
 window.storage = {
 	get: function() {
 		try {
@@ -90,8 +113,10 @@ window.storage = {
 
 	set: function(data) {
 		let content = JSON.stringify(data, null, 2);
-
 		fs.writeFileSync(settingsFile, content, { encoding: 'utf8' });
-	}
+	},
 
+	translations: function() {
+		return translations;
+	}
 }
