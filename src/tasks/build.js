@@ -150,7 +150,8 @@ module.exports = function(gulp, plugins, basedir, argv) {
 
 							files: [
 								path.join('src', 'main', 'js'),
-								path.join('src', 'main', 'resources', 'icons')
+								path.join('src', 'main', 'resources', 'icons'),
+								path.join('src', 'main', 'resources', 'nls')
 							],
 
 							asarUnpack: [
