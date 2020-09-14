@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@totvs/tds-languageclient": "0.0.22",
-    "@totvs/tds-monitor-frontend": "0.1.12",
+    "@totvs/tds-monitor-frontend": "0.1.13",
     "yargs": "^15.4.1"
   },
   "config": {
