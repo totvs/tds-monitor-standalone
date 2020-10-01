@@ -26,8 +26,8 @@
     "shelljs": "^0.8.4"
   },
   "dependencies": {
-    "@totvs/tds-languageclient": "0.0.23",
-    "@totvs/tds-monitor-frontend": "0.1.14",
+    "@totvs/tds-languageclient": "0.0.24",
+    "@totvs/tds-monitor-frontend": "0.1.15",
     "yargs": "^15.4.1"
   },
   "config": {
