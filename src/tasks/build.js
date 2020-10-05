@@ -41,10 +41,35 @@ module.exports = function(gulp, plugins, basedir, argv) {
 			certificateFile = env.CERTIFICATE_FILE || env.bamboo_CERTIFICATE_FILE || null,
 			certificatePassword = env.CERTIFICATE_PASSWORD || env.bamboo_CERTIFICATE_PASSWORD || null;
 
-		if ((certificateFile === null) || (certificatePassword === null)) {
+		// if ((certificateFile === null) || (certificatePassword === null)) {
+		// 	certificateFile = null;
+		// 	certificatePassword = null;
+		// }
+
+		if (!shelljs.test('-e', certificateFile)) {
+			console.error(`Certificate file not found: (${certificateFile})`)
 			certificateFile = null;
-			certificatePassword = null;
 		}
+
+		if (certificateFile !== null) {
+			const extension = path.extname(certificateFile);
+
+			if ((extension === '.cer') || (extension === '.crt')) {
+				let originalFile = certificateFile;
+				certificateFile = path.join(
+					shelljs.tempdir(),
+					path.basename(certificateFile, extension) + '.pfx'
+				);
+
+				console.log(`Copying ${originalFile} to ${certificateFile}`);
+
+				shelljs.cp(originalFile, certificateFile);
+			}
+
+
+		}
+
+
 
 		if (argv.targets) {
 			targets = argv.targets.split(',');
@@ -59,6 +84,9 @@ module.exports = function(gulp, plugins, basedir, argv) {
 						targetDir = path.join(basedir, 'target', 'dist', identifier),
 						artifactName = `${finalName}-\${version}-${os}-${arch}`,
 						resourcesBasedir = path.join(basedir, "src", "main", "resources");
+
+					console.log('certificateFile', certificateFile);
+					console.log('certificatePassword', certificatePassword);
 
 					return builder.build({
 						targets: Platform[os.toUpperCase()].createTarget(target, Arch[builderArch]),
@@ -85,10 +113,12 @@ module.exports = function(gulp, plugins, basedir, argv) {
 							},
 
 							win: {
+								sign: path.join(resourcesBasedir, "scripts", "sign-windows.js"),
 								icon: path.join('icons', 'application.ico'),
-								publisherName: 'TOTVS S/A',
+								publisherName: ['TOTVS S/A', 'TOTVS S.A', 'TOTVS S.A.'],
 								certificateFile: certificateFile,
-								certificatePassword: certificatePassword
+								certificatePassword: certificatePassword,
+								signingHashAlgorithms: ['sha1']
 							},
 							msi: {
 								perMachine: true
