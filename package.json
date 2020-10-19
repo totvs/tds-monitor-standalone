@@ -27,8 +27,8 @@
     "signtool": "^1.0.0"
   },
   "dependencies": {
-    "@totvs/tds-languageclient": "0.0.29",
-    "@totvs/tds-monitor-frontend": "0.1.20",
+    "@totvs/tds-languageclient": "0.0.30",
+    "@totvs/tds-monitor-frontend": "0.1.21",
     "yargs": "^16.0.3"
   },
   "config": {
