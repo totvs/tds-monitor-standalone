@@ -5,7 +5,6 @@ let gulp = require('gulp'),
 	path = require('path'),
 	yargs = require('yargs');
 
-
 let tasksDir = path.join(__dirname, 'src', 'tasks'),
 	tasks = shelljs.ls(tasksDir),
 	plugins = {},
@@ -48,4 +47,33 @@ tasks.forEach((filename) => {
 		taskaction = require(taskfile)(gulp, plugins, __dirname, argv);
 
 	gulp.task(taskname, taskaction);
+});
+
+gulp.task(
+  "export-i18n",
+  gulp.series(function (done) {
+    return gulp
+      .src([
+        "main/resources/nls/nls.es.json",
+        "main/resources/nls/nls.pt-br.json",
+        "main/resources/nls/nls.ru.json",
+      ])
+      .pipe(nls.createXlfFiles("tds-monitor-standalone", "tds-monitor-standalone"))
+      .pipe(gulp.dest(path.join("../tds-monitor-standalone-export")))
+      .on("end", () => done());
+  })
+);
+
+gulp.task("i18n-import", (done) => {
+  return es.merge(
+    languages.map((language) => {
+      const id = language.transifexId || language.id;
+      log(`Processing ${id}`);
+      return gulp
+        .src([`../tds-monitor-standalone-import/tds-monitor-standalone/tds-monitor-standalone${id}.xlf`])
+        .pipe(nls.prepareJsonFiles())
+        .pipe(gulp.dest(path.join("./main/resources/", language.folderName)))
+        .on("end", () => done());
+    })
+  );
 });
