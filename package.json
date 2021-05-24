@@ -1,12 +1,18 @@
 {
   "name": "@totvs/tds-monitor-standalone",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "TDS Monitor",
   "main": "src/main/js/index.js",
   "scripts": {
     "start": "electron .",
     "build": "gulp build",
     "clean": "gulp clean",
+    "---RELEASE---": "",
+    "release": "npx standard-version",
+    "tag": "git push --follow-tags",
+    "to_publish": "npm publish",
+    "prepublishOnly": "npm run clean && npm run build",
+    "---MISC---": "",
     "link": "npm link @totvs/tds-languageclient @totvs/tds-monitor-frontend"
   },
   "repository": "https://github.com/totvs/tds-monitor-standalone",
