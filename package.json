@@ -1,12 +1,19 @@
 {
   "name": "@totvs/tds-monitor-standalone",
-  "version": "0.2.11",
+  "version": "0.2.14",
   "description": "TDS Monitor",
   "main": "src/main/js/index.js",
   "scripts": {
     "start": "electron .",
+    "startLogging": "npm run start -- --logging",
     "build": "gulp build",
     "clean": "gulp clean",
+    "---RELEASE---": "",
+    "release": "npx standard-version",
+    "tag": "git push --follow-tags",
+    "to_publish": "npm publish",
+    "prepublishOnly": "npm run clean && npm run build",
+    "---MISC---": "",
     "link": "npm link @totvs/tds-languageclient @totvs/tds-monitor-frontend"
   },
   "repository": "https://github.com/totvs/tds-monitor-standalone",
@@ -19,7 +26,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "electron": "9.3.1",
-    "electron-builder": "^22.8.1",
+    "electron-builder": "^22.11.7",
     "electron-notarize": "^1.0.0",
     "gulp": "^4.0.2",
     "q": "^1.5.1",
@@ -28,8 +35,8 @@
     "vscode-nls-dev": "^3.3.2"
   },
   "dependencies": {
-    "@totvs/tds-languageclient": "0.0.33",
-    "@totvs/tds-monitor-frontend": "0.1.24",
+    "@totvs/tds-languageclient": "0.0.35",
+    "@totvs/tds-monitor-frontend": "0.1.26",
     "yargs": "^16.0.3"
   },
   "config": {
