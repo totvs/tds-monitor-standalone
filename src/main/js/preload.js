@@ -1,22 +1,24 @@
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
-const { ipcRenderer, remote } = require('electron');
+const { ipcRenderer, remote } = require("electron");
 const { getCurrentWindow } = remote;
-const fs = require('fs');
-const path = require('path');
-const { homedir } = require('./util');
+const fs = require("fs");
+const path = require("path");
+const { homedir } = require("./util");
 
 let mainWindow = getCurrentWindow(),
-	pkg = require('../../../package.json'),
+	pkg = require("../../../package.json"),
 	translations = {};
 
 window.ipcRenderer = ipcRenderer;
-window.languageClient = require('@totvs/tds-languageclient').TdsLanguageClient.instance();
+window.languageClient =
+	require("@totvs/tds-languageclient").TdsLanguageClient.instance({logging: window.process.argv.includes("--logging")});
 window.versions = {
-	'main': pkg.version,
-	'@totvs/tds-languageclient': pkg.dependencies['@totvs/tds-languageclient'],
-	'@totvs/tds-monitor-frontend': pkg.dependencies['@totvs/tds-monitor-frontend']
-}
+	main: pkg.version,
+	"@totvs/tds-languageclient": pkg.dependencies["@totvs/tds-languageclient"],
+	"@totvs/tds-monitor-frontend":
+		pkg.dependencies["@totvs/tds-monitor-frontend"],
+};
 
 window.reload = () => {
 	mainWindow.webContents.reloadIgnoringCache();
@@ -42,25 +44,25 @@ window.close = () => {
 	mainWindow.close();
 };
 
-window.addEventListener('keydown', (event) => {
+window.addEventListener("keydown", (event) => {
 	if (event.ctrlKey && event.altKey) {
 		switch (event.key) {
-			case 'F5':
+			case "F5":
 				window.reload();
 				break;
-			case 'F12':
+			case "F12":
 				window.toggleDevTools();
 				break;
 		}
 	}
 });
 
-mainWindow.on('maximize', () => {
-	window.dispatchEvent(new Event('maximized'));
+mainWindow.on("maximize", () => {
+	window.dispatchEvent(new Event("maximized"));
 });
 
-mainWindow.on('unmaximize', () => {
-	window.dispatchEvent(new Event('restored'));
+mainWindow.on("unmaximize", () => {
+	window.dispatchEvent(new Event("restored"));
 });
 
 const settingsDir = homedir();
@@ -68,55 +70,53 @@ if (!fs.existsSync(settingsDir)) {
 	fs.mkdirSync(settingsDir, { recursive: true });
 }
 
-const settingsFile = path.join(settingsDir, 'settings.json');
+const settingsFile = path.join(settingsDir, "settings.json");
 if (!fs.existsSync(settingsFile)) {
 	let content = window.localStorage.getItem("settings");
 	if (!content) {
-		content = '{}';
+		content = "{}";
 	}
 
-	fs.writeFileSync(settingsFile, content, { encoding: 'utf8' });
+	fs.writeFileSync(settingsFile, content, { encoding: "utf8" });
 }
 
 if (fs.existsSync(settingsFile)) {
-	let settingsData = fs.readFileSync(settingsFile, { encoding: 'utf8' });
+	let settingsData = fs.readFileSync(settingsFile, { encoding: "utf8" });
 	let settings = JSON.parse(settingsData);
-	let localeCodeSetting = 'pt-br';
+	let localeCodeSetting = "pt-br";
 	if (settings && settings.config && settings.config.language) {
-		if (settings.config.language === 'english') {
-			localeCodeSetting = 'en';
-		}
-		else if (settings.config.language === 'spanish') {
-			localeCodeSetting = 'es';
+		if (settings.config.language === "english") {
+			localeCodeSetting = "en";
+		} else if (settings.config.language === "spanish") {
+			localeCodeSetting = "es";
 		}
 	}
 	let nls = {};
-	if (localeCodeSetting !== 'en') {
+	if (localeCodeSetting !== "en") {
 		let localeFile = `nls.${localeCodeSetting}.json`;
-		localeFile = path.join(__dirname, '..', 'resources', 'nls', localeFile);
-		let nlsData = fs.readFileSync(localeFile, { encoding: 'utf8' });
+		localeFile = path.join(__dirname, "..", "resources", "nls", localeFile);
+		let nlsData = fs.readFileSync(localeFile, { encoding: "utf8" });
 		nls = JSON.parse(nlsData);
 	}
 	translations = nls;
 }
 
 window.storage = {
-	get: function() {
+	get: function () {
 		try {
-			let data = fs.readFileSync(settingsFile, { encoding: 'utf8' });
+			let data = fs.readFileSync(settingsFile, { encoding: "utf8" });
 			return JSON.parse(data);
-		}
-		catch (ex) {
+		} catch (ex) {
 			return {};
 		}
 	},
 
-	set: function(data) {
+	set: function (data) {
 		let content = JSON.stringify(data, null, 2);
-		fs.writeFileSync(settingsFile, content, { encoding: 'utf8' });
+		fs.writeFileSync(settingsFile, content, { encoding: "utf8" });
 	},
 
-	translations: function() {
+	translations: function () {
 		return translations;
-	}
-}
+	},
+};
