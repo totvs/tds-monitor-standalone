@@ -1,10 +1,11 @@
 'use strict';
 
+const nls = require("vscode-nls-dev");
+
 let gulp = require('gulp'),
 	shelljs = require('shelljs'),
 	path = require('path'),
 	yargs = require('yargs');
-
 
 let tasksDir = path.join(__dirname, 'src', 'tasks'),
 	tasks = shelljs.ls(tasksDir),
