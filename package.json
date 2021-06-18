@@ -35,7 +35,7 @@
     "vscode-nls-dev": "^3.3.2"
   },
   "dependencies": {
-    "@totvs/tds-languageclient": "0.0.36",
+    "@totvs/tds-languageclient": "0.0.37",
     "@totvs/tds-monitor-frontend": "0.1.27",
     "yargs": "^16.0.3"
   },
