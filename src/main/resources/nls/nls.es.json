@@ -21,7 +21,6 @@
   "INVALID_SERVER_NAME": "Nombre de servidor no válido",
   "INVALID_SERVER_TYPE_SELECTION": "Selección de tipo de servidor no válido",
   "INVALID_ADDRESS": "Dirección no válida",
-  "INVALID_SERVER_ADDRESS": "Dirección de servidor no válida",
   "INVALID_PORT": "Puerto no válido",
   "INVALID_SERVER_PORT": "Puerto de servidor no válido",
   "SERVER_DATA_ALREADY_REGISTERED": "Datos del servidor ya registrados",
@@ -91,5 +90,6 @@
   "DO_AUTO_UPDATE": "Auto actualizar",
   "DO_SEND_MESSAGE": "Enviar Mensaje",
   "DO_DISCONNECT": "Desconectar",
-  "DO_OTHER_ACTIONS": "Otras acciones"
+  "DO_OTHER_ACTIONS": "Otras acciones",
+  "INVALID_SERVER_ADDRESS": "Dirección de servidor no válida"
 }

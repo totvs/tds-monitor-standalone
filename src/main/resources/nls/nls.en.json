@@ -21,7 +21,6 @@
   "INVALID_SERVER_NAME": "Invalid serversname",
   "INVALID_SERVER_TYPE_SELECTION": "Invalid server type selection",
   "INVALID_ADDRESS": "Invalid address",
-  "INVALID_SERVER_ADDRESS": "Invalid server address",
   "INVALID_PORT": "Invalid port",
   "INVALID_SERVER_PORT": "Invalid server port",
   "SERVER_DATA_ALREADY_REGISTERED": "Server data already registered",
@@ -91,5 +90,6 @@
   "DO_AUTO_UPDATE": "Auto atualizar",
   "DO_SEND_MESSAGE": "Enviar Mensagem",
   "DO_DISCONNECT": "Desconectar",
-  "DO_OTHER_ACTIONS": "Outras ações"
+  "DO_OTHER_ACTIONS": "Outras ações",
+  "INVALID_SERVER_ADDRESS": "Invalid server address"
 }

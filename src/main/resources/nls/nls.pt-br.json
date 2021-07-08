@@ -21,7 +21,6 @@
   "INVALID_SERVER_NAME": "Nome de servidor inválido",
   "INVALID_SERVER_TYPE_SELECTION": "Seleção de tipo de servidor inválido",
   "INVALID_ADDRESS": "Endereço inválido",
-  "INVALID_SERVER_ADDRESS": "Endereço de servidor inválido",
   "INVALID_PORT": "Porta inválida",
   "INVALID_SERVER_PORT": "Porta de servidor inválida",
   "SERVER_DATA_ALREADY_REGISTERED": "Dados de servidor já cadastrados",
@@ -91,5 +90,6 @@
   "DO_AUTO_UPDATE": "Auto Update",
   "DO_SEND_MESSAGE": "Send Message",
   "DO_DISCONNECT": "Disconnect",
-  "DO_OTHER_ACTIONS": "Other actions"
+  "DO_OTHER_ACTIONS": "Other actions",
+  "INVALID_SERVER_ADDRESS": "Endereço de servidor inválido"
 }
