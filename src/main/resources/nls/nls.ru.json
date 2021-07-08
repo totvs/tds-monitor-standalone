@@ -7,7 +7,6 @@
   "NO": "No",
   "ENABLE": "Enable",
   "DISABLE": "Disable",
-  "DISABLED": "Disabled",
   "X_SECONDS": "{0} seconds",
   "CLOSE": "Close",
   "PROTHEUS": "Protheus",
@@ -91,5 +90,6 @@
   "DO_SEND_MESSAGE": "Enviar Mensagem",
   "DO_DISCONNECT": "Desconectar",
   "DO_OTHER_ACTIONS": "Outras ações",
-  "INVALID_SERVER_ADDRESS": "Invalid server address"
+  "INVALID_SERVER_ADDRESS": "Invalid server address",
+  "DISABLED": "Disabled"
 }
