@@ -22,15 +22,16 @@ module.exports = function (gulp, plugins, basedir, argv) {
 	return function () {
 		let targets = getTargetPlatforms(argv),
 			archs = getTargetArchs(argv);
+		company = getTargetCompany(argv);
 
 		return archs.reduce((promise, bits) => {
 			return targets.reduce((promise, os) => {
-				return promise.then(() => electronBuild(os, bits));
+				return promise.then(() => electronBuild(os, bits, company));
 			}, promise);
 		}, Q());
 	};
 
-	function electronBuild(os, bits) {
+	function electronBuild(os, bits, company) {
 		let env = process.env,
 			identifier = `${os}-${bits}`,
 			targets = ["dir"],
@@ -76,9 +77,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 		return targets.reduce((promise, target) => {
 			return promise.then(() => {
 				console.log(
-					`Electron Builder ${identifier} ${target} ${getPublisherName(
-						argv
-					)}`
+					`Electron Builder ${identifier} ${target} ${company}`
 				);
 
 				const appDir = basedir, //path.join(basedir, 'target', 'staging', identifier),
@@ -88,7 +87,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 						"dist",
 						identifier
 					),
-					artifactName = `${finalName}-\${version}-${os}-${arch}${getTargetCompany()}`,
+					artifactName = `${finalName}-\${version}-${os}-${arch}${company}`,
 					resourcesBasedir = path.join(
 						basedir,
 						"src",
