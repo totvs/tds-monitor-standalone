@@ -163,7 +163,9 @@ module.exports = function (gulp, plugins, basedir, argv) {
 							perMachine: true,
 						},
 						nsis: {
-							artifactName: `${artifactName}.setup.\${ext}`,
+							artifactName: `${artifactName}-${getTargetCompany(
+								argv
+							)}.setup.\${ext}`,
 							allowToChangeInstallationDirectory: true,
 							//displayLanguageSelector: true,
 							installerHeaderIcon: path.join(
@@ -266,6 +268,10 @@ module.exports = function (gulp, plugins, basedir, argv) {
 		if (archs.length === 0) archs.push(64);
 
 		return archs;
+	}
+
+	function getTargetCompany(argv) {
+		return argv.company;
 	}
 
 	function getTargetPlatforms(argv) {

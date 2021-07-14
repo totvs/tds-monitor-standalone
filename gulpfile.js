@@ -38,6 +38,12 @@ let tasksDir = path.join(__dirname, "src", "tasks"),
 			describe: "Aciona build MacOS",
 			type: "boolean",
 			default: false,
+		})
+		.options("company", {
+			describe: "Distribution brand",
+			type: "string",
+			choices: ["totvs", "np"],
+			requiresArg: true,
 		}).argv;
 
 tasks.forEach((filename) => {
