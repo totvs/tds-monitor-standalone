@@ -21,8 +21,8 @@ module.exports = function (gulp, plugins, basedir, argv) {
 
 	return function () {
 		let targets = getTargetPlatforms(argv),
-			archs = getTargetArchs(argv);
-		company = getTargetCompany(argv);
+			archs = getTargetArchs(argv),
+			company = getTargetCompany(argv);
 
 		return archs.reduce((promise, bits) => {
 			return targets.reduce((promise, os) => {
@@ -87,7 +87,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 						"dist",
 						identifier
 					),
-					artifactName = `${finalName}-\${version}-${os}-${arch}${company}`,
+					artifactName = `${finalName}${company}-\${version}-${os}-${arch}`,
 					resourcesBasedir = path.join(
 						basedir,
 						"src",
@@ -166,9 +166,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 							perMachine: true,
 						},
 						nsis: {
-							artifactName: `${artifactName}${getTargetCompany(
-								argv
-							)}.setup.\${ext}`,
+							artifactName: `${artifactName}.setup.\${ext}`,
 							allowToChangeInstallationDirectory: true,
 							//displayLanguageSelector: true,
 							installerHeaderIcon: path.join(

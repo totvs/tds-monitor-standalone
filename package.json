@@ -7,6 +7,8 @@
     "start": "electron .",
     "startLogging": "npm run start -- --logging --dev",
     "build": "gulp build",
+    "build:totvs": "gulp build --targets=nsis,zip -LLLL --company=totvs",
+    "build:np": "gulp build --targets=nsis,zip -LLLL --company=np",
     "clean": "gulp clean",
     "---RELEASE---": "",
     "release": "npx standard-version",
