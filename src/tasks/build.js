@@ -105,7 +105,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 					config: {
 						appId: pkg.config.appId,
 						artifactName: `${artifactName}.\${ext}`,
-						productName: "totvs-monitor",
+						productName: `${getTargetCompany(argv)}-monitor`,
 
 						afterPack: async (context) => {
 							const bin = path.join(
@@ -151,9 +151,9 @@ module.exports = function (gulp, plugins, basedir, argv) {
 							//sign: path.join(resourcesBasedir, "scripts", "sign-windows.js"),
 							icon: path.join("icons", "application.ico"),
 							publisherName: [
-								"TOTVS S/A",
-								"TOTVS S.A",
-								"TOTVS S.A.",
+								getPublisherName(argv),
+								getPublisherName(argv),
+								getPublisherName(argv),
 							],
 							certificateFile: certificateFile,
 							certificatePassword: certificatePassword,
@@ -163,7 +163,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 							perMachine: true,
 						},
 						nsis: {
-							artifactName: `${artifactName}-${getTargetCompany(
+							artifactName: `${artifactName}${getTargetCompany(
 								argv
 							)}.setup.\${ext}`,
 							allowToChangeInstallationDirectory: true,
@@ -180,7 +180,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 							],
 							oneClick: false,
 							perMachine: true,
-							uninstallDisplayName: "TOTVS Monitor",
+							uninstallDisplayName: getDisplayName(argv),
 
 							//installerSidebar: 'totvs.bmp'
 						},
@@ -189,12 +189,14 @@ module.exports = function (gulp, plugins, basedir, argv) {
 							executableName: "monitor",
 							category: "System",
 							desktop: {
-								Name: "TOTVS Monitor",
+								Name: getDisplayName(argv),
 								Type: "Application",
-								Keywords: "TOTVS;Protheus;Monitor",
+								Keywords: `${getTargetCompany(
+									argv
+								).toUpperCase()};Protheus;Monitor`,
 							},
-							maintainer: "TOTVS",
-							vendor: "TOTVS",
+							maintainer: `${getPublisherName(argv)}`,
+							vendor: `${getPublisherName(argv)}`,
 						},
 						deb: {
 							compression: "gz",
@@ -208,7 +210,6 @@ module.exports = function (gulp, plugins, basedir, argv) {
 
 							cscLink: certificateFile,
 							cscKeyPassword: certificatePassword,
-
 							identity:
 								env.APPLE_ID_IDENTITY ||
 								env.bamboo_APPLE_ID_IDENTITY ||
@@ -270,8 +271,16 @@ module.exports = function (gulp, plugins, basedir, argv) {
 		return archs;
 	}
 
+	function getPublisherName(argv) {
+		return argv.company == "totvs" ? "TOTVS S.A." : "National Platform";
+	}
+
 	function getTargetCompany(argv) {
-		return argv.company;
+		return argv.company == "totvs" ? "" : `-${argv.company}`;
+	}
+
+	function getDisplayName(argv) {
+		return `-${argv.company.toUpperCase()} Monitor`;
 	}
 
 	function getTargetPlatforms(argv) {
