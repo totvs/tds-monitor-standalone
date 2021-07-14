@@ -75,7 +75,11 @@ module.exports = function (gulp, plugins, basedir, argv) {
 
 		return targets.reduce((promise, target) => {
 			return promise.then(() => {
-				console.log(`Electron Builder ${identifier} ${target}`);
+				console.log(
+					`Electron Builder ${identifier} ${target} ${getPublisherName(
+						argv
+					)}`
+				);
 
 				const appDir = basedir, //path.join(basedir, 'target', 'staging', identifier),
 					targetDir = path.join(
@@ -84,7 +88,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 						"dist",
 						identifier
 					),
-					artifactName = `${finalName}-\${version}-${os}-${arch}`,
+					artifactName = `${finalName}-\${version}-${os}-${arch}${getTargetCompany()}`,
 					resourcesBasedir = path.join(
 						basedir,
 						"src",
