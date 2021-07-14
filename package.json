@@ -14,7 +14,7 @@
     "to_publish": "npm publish",
     "prepublishOnly": "npm run clean && npm run build",
     "---MISC---": "",
-    "link": "npm link @totvs/tds-languageclient @totvs/tds-monitor-frontend"
+    "build-i18n": "tds-build-i18n --nls-folder ./src/main/resources/nls"
   },
   "repository": "https://github.com/totvs/tds-monitor-standalone",
   "keywords": [
