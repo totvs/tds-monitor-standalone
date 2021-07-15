@@ -10,9 +10,13 @@ let mainWindow = getCurrentWindow(),
 	pkg = require("../../../package.json"),
 	translations = {};
 
+const company = pkg.config.appId.split(".")[1];
+
 window.ipcRenderer = ipcRenderer;
 window.languageClient =
-	require("@totvs/tds-languageclient").TdsLanguageClient.instance({logging: window.process.argv.includes("--logging")});
+	require("@totvs/tds-languageclient").TdsLanguageClient.instance({
+		logging: window.process.argv.includes("--logging"),
+	});
 window.versions = {
 	main: pkg.version,
 	"@totvs/tds-languageclient": pkg.dependencies["@totvs/tds-languageclient"],
@@ -118,5 +122,9 @@ window.storage = {
 
 	translations: function () {
 		return translations;
+	},
+
+	company: function () {
+		return company;
 	},
 };

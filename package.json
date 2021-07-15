@@ -33,12 +33,11 @@
     "gulp": "^4.0.2",
     "q": "^1.5.1",
     "shelljs": "^0.8.4",
-    "signtool": "^1.0.0",
-    "vscode-nls-dev": "^3.3.2"
+    "signtool": "^1.0.0"
   },
   "dependencies": {
     "@totvs/tds-languageclient": "0.0.37",
-    "@totvs/tds-monitor-frontend": "0.1.28",
+    "@totvs/tds-monitor-frontend": "0.1.30-rc",
     "yargs": "^16.0.3"
   },
   "config": {

@@ -8,6 +8,8 @@ const path = require("path"),
 	Arch = builder.Arch;
 
 module.exports = function (gulp, plugins, basedir, argv) {
+	adjustPackageJson(argv);
+
 	const pkg = require(path.join(basedir, "package.json")),
 		finalName = "monitor-electron";
 
@@ -152,7 +154,11 @@ module.exports = function (gulp, plugins, basedir, argv) {
 
 						win: {
 							//sign: path.join(resourcesBasedir, "scripts", "sign-windows.js"),
-							icon: path.join("icons", "application.ico"),
+							icon: path.join(
+								"icons",
+								getTargetCompany(argv),
+								"application.ico"
+							),
 							publisherName: [
 								getPublisherName(argv),
 								getPublisherName(argv),
@@ -171,6 +177,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 							//displayLanguageSelector: true,
 							installerHeaderIcon: path.join(
 								"icons",
+								getTargetCompany(argv),
 								"application.ico"
 							),
 							installerLanguages: [
@@ -192,6 +199,11 @@ module.exports = function (gulp, plugins, basedir, argv) {
 							desktop: {
 								Name: getDisplayName(argv),
 								Type: "Application",
+								Icon: path.join(
+									"icons",
+									getTargetCompany(argv),
+									"application.ico"
+								),
 								Keywords: `${getTargetCompany(
 									argv
 								).toUpperCase()};Protheus;Monitor`,
@@ -306,6 +318,16 @@ module.exports = function (gulp, plugins, basedir, argv) {
 				return "mac";
 			default:
 				return process.platform;
+		}
+	}
+
+	function adjustPackageJson(argv) {
+		const pkg = require(path.join(basedir, "package.json"));
+		const company = getTargetCompany(argv);
+
+		if (company != "totvs") {
+			pkg.config.appId = pkg.config.appId.replace(/totvs/gi, company);
+			pkg.author = pkg.author.replace(/totvs/gi, company.toUpperCase());
 		}
 	}
 };

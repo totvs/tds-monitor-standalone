@@ -1,7 +1,6 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
-
 const argv = require("yargs") // eslint-disable-line
 	.options("logging", {
 		alias: ["l"],
@@ -25,20 +24,29 @@ let mainWindow;
 
 function createWindow() {
 	// Create the browser window.
+	const pkg = require(path.join(__dirname, "..", "..", "..", "package.json"));
+	const company = pkg.config.appId.split(".")[1];
+
 	mainWindow = new BrowserWindow({
 		show: false,
 		width: 800,
 		height: 600,
-		title: "TOTVS Monitor",
-		icon: path.join(__dirname, "..", "resources", "icons", "1024x1024.png"),
-
+		title: company.toUpperCase() + " Monitor",
+		icon: path.join(
+			__dirname,
+			"..",
+			"resources",
+			"icons",
+			company,
+			"1024x1024.png"
+		),
 		//titleBarStyle: "hidden",
 		frame: false,
 		webPreferences: {
 			nodeIntegration: true,
 			preload: path.join(__dirname, "preload.js"),
-			additionalArguments: [ argv.logging?"--logging":""]
-		}
+			additionalArguments: [argv.logging ? "--logging" : ""],
+		},
 	});
 	mainWindow.once("ready-to-show", () => {
 		mainWindow.show();
