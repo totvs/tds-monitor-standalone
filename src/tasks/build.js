@@ -23,17 +23,16 @@ module.exports = function (gulp, plugins, basedir, argv) {
 
 	return function () {
 		let targets = getTargetPlatforms(argv),
-			archs = getTargetArchs(argv),
-			company = getTargetCompany(argv);
+			archs = getTargetArchs(argv);
 
 		return archs.reduce((promise, bits) => {
 			return targets.reduce((promise, os) => {
-				return promise.then(() => electronBuild(os, bits, company));
+				return promise.then(() => electronBuild(os, bits));
 			}, promise);
 		}, Q());
 	};
 
-	function electronBuild(os, bits, company) {
+	function electronBuild(os, bits) {
 		let env = process.env,
 			identifier = `${os}-${bits}`,
 			targets = ["dir"],
@@ -79,7 +78,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 		return targets.reduce((promise, target) => {
 			return promise.then(() => {
 				console.log(
-					`Electron Builder ${identifier} ${target} ${company}`
+					`Electron Builder ${identifier} ${target} ${argv.company.toUpperCase()}`
 				);
 
 				const appDir = basedir, //path.join(basedir, 'target', 'staging', identifier),
@@ -89,7 +88,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 						"dist",
 						identifier
 					),
-					artifactName = `${finalName}${company}-\${version}-${os}-${arch}`,
+					artifactName = getArtifactName(argv, finalName, os, arch),
 					resourcesBasedir = path.join(
 						basedir,
 						"src",
@@ -110,7 +109,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 					config: {
 						appId: pkg.config.appId,
 						artifactName: `${artifactName}.\${ext}`,
-						productName: `${getTargetCompany(argv)}-monitor`,
+						productName: getProductName(argv),
 
 						afterPack: async (context) => {
 							const bin = path.join(
@@ -156,7 +155,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 							//sign: path.join(resourcesBasedir, "scripts", "sign-windows.js"),
 							icon: path.join(
 								"icons",
-								getTargetCompany(argv),
+								argv.company,
 								"application.ico"
 							),
 							publisherName: [
@@ -177,7 +176,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 							//displayLanguageSelector: true,
 							installerHeaderIcon: path.join(
 								"icons",
-								getTargetCompany(argv),
+								argv.company,
 								"application.ico"
 							),
 							installerLanguages: [
@@ -201,12 +200,10 @@ module.exports = function (gulp, plugins, basedir, argv) {
 								Type: "Application",
 								Icon: path.join(
 									"icons",
-									getTargetCompany(argv),
+									argv.company,
 									"application.ico"
 								),
-								Keywords: `${getTargetCompany(
-									argv
-								).toUpperCase()};Protheus;Monitor`,
+								Keywords: `${argv.company.toUpperCase()};Protheus;Monitor`,
 							},
 							maintainer: `${getPublisherName(argv)}`,
 							vendor: `${getPublisherName(argv)}`,
@@ -257,7 +254,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 
 						files: [
 							path.join("src", "main", "js"),
-							path.join("src", "main", "resources", "icons"),
+							path.join("src", "main", "resources", "icons", argv.company),
 							path.join("src", "main", "resources", "nls"),
 						],
 
@@ -288,12 +285,19 @@ module.exports = function (gulp, plugins, basedir, argv) {
 		return argv.company == "totvs" ? "TOTVS S.A." : "National Platform";
 	}
 
-	function getTargetCompany(argv) {
-		return argv.company == "totvs" ? "" : `-${argv.company}`;
+	function getProductName(argv) {
+
+		return `monitor-electron-${argv.company}`;
+	}
+
+	function getArtifactName(argv, finalName, os, arch) {
+		const company = argv.company;
+
+		return `${finalName}-${company === 'totvs'?"":`${company}-`}\${version}-${os}-${arch}`;
 	}
 
 	function getDisplayName(argv) {
-		return `-${argv.company.toUpperCase()} Monitor`;
+		return `${argv.company.toUpperCase()} Monitor`;
 	}
 
 	function getTargetPlatforms(argv) {
@@ -322,12 +326,14 @@ module.exports = function (gulp, plugins, basedir, argv) {
 	}
 
 	function adjustPackageJson(argv) {
-		const pkg = require(path.join(basedir, "package.json"));
-		const company = getTargetCompany(argv);
+		const pkgFile = path.join(basedir, "package.json");
+		const pkg = require(pkgFile);
 
-		if (company != "totvs") {
-			pkg.config.appId = pkg.config.appId.replace(/totvs/gi, company);
-			pkg.author = pkg.author.replace(/totvs/gi, company.toUpperCase());
+		if (argv.company && argv.company != "totvs") {
+			pkg.config.appId = pkg.config.appId.replace(/totvs/gi, argv.company);
+			pkg.author = pkg.author.replace(/totvs/gi, argv.company.toUpperCase());
+
+			fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2));
 		}
 	}
 };
