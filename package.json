@@ -13,7 +13,6 @@
     "---RELEASE---": "",
     "release": "npx standard-version",
     "tag": "git push --follow-tags",
-    "to_publish": "npm publish",
     "prepublishOnly": "npm run clean && npm run build",
     "---MISC---": "",
     "build-i18n": "tds-build-i18n --nls-folder ./src/main/resources/nls"
@@ -24,7 +23,7 @@
     "monitor",
     "totvs"
   ],
-  "author": "TOTVS",
+  "author": "NP",
   "license": "Apache-2.0",
   "devDependencies": {
     "electron": "9.3.1",
@@ -37,7 +36,7 @@
   },
   "dependencies": {
     "@totvs/tds-languageclient": "0.0.37",
-    "@totvs/tds-monitor-frontend": "0.1.30-rc",
+    "@totvs/tds-monitor-frontend": "0.1.31",
     "yargs": "^16.0.3"
   },
   "config": {

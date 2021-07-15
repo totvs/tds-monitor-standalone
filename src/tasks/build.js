@@ -4,6 +4,7 @@ const path = require("path"),
 	Q = require("q"),
 	builder = require("electron-builder"),
 	shelljs = require("shelljs"),
+	fs = require("fs"),
 	Platform = builder.Platform,
 	Arch = builder.Arch;
 
@@ -330,10 +331,24 @@ module.exports = function (gulp, plugins, basedir, argv) {
 		const pkg = require(pkgFile);
 
 		if (argv.company && argv.company != "totvs") {
+			const oldId = pkg.config.appId;
+			const oldAuthor = pkg.author;
+
 			pkg.config.appId = pkg.config.appId.replace(/totvs/gi, argv.company);
 			pkg.author = pkg.author.replace(/totvs/gi, argv.company.toUpperCase());
 
 			fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2));
+
+			console.error("==================================================");
+			console.error("--------------------------------------------------");
+			console.error("A T E N Ç Ã O");
+			console.error("\tRECOMENDA-SE NÃO ENVIAR A MODIFICAÇÂO PARA O REPOSITÓRIO");
+			console.error(`\tArquivo ${pkgFile} modificado.`);
+			console.error("\tAs chaves abaixo foram modificadas:");
+			console.error(`\t\tconfig.appId = ${oldId} -> ${pkg.config.appId}`);
+			console.error(`\t\tauthor       = ${oldAuthor} -> ${pkg.author}`);
+			console.error("--------------------------------------------------");
+			console.error("==================================================");
 		}
 	}
 };
