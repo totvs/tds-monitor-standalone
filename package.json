@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "startLogging": "npm run start -- --logging --dev",
-    "build": "npm run build:totvs && npm run build:np",
+    "build": "gulp build",
     "build:totvs": "gulp build --targets=nsis,zip -LLLL --company=totvs",
     "build:np": "gulp build --targets=nsis,zip -LLLL --company=np",
     "clean": "gulp clean",
