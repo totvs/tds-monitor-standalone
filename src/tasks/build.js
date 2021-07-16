@@ -194,6 +194,10 @@ module.exports = function (gulp, plugins, basedir, argv) {
 						},
 
 						linux: {
+							 icon: path.join(
+							 	"icons",
+							 	argv.company
+							),
 							executableName: "monitor",
 							category: "System",
 							desktop: {
@@ -255,7 +259,13 @@ module.exports = function (gulp, plugins, basedir, argv) {
 
 						files: [
 							path.join("src", "main", "js"),
-							path.join("src", "main", "resources", "icons", argv.company),
+							path.join(
+								"src",
+								"main",
+								"resources",
+								"icons",
+								argv.company
+							),
 							path.join("src", "main", "resources", "nls"),
 						],
 
@@ -287,14 +297,15 @@ module.exports = function (gulp, plugins, basedir, argv) {
 	}
 
 	function getProductName(argv) {
-
 		return `monitor-electron-${argv.company}`;
 	}
 
 	function getArtifactName(argv, finalName, os, arch) {
 		const company = argv.company;
 
-		return `${finalName}-${company === 'totvs'?"":`${company}-`}\${version}-${os}-${arch}`;
+		return `${finalName}-${
+			company === "totvs" ? "" : `${company}-`
+		}\${version}-${os}-${arch}`;
 	}
 
 	function getDisplayName(argv) {
@@ -334,15 +345,23 @@ module.exports = function (gulp, plugins, basedir, argv) {
 			const oldId = pkg.config.appId;
 			const oldAuthor = pkg.author;
 
-			pkg.config.appId = pkg.config.appId.replace(/totvs/gi, argv.company);
-			pkg.author = pkg.author.replace(/totvs/gi, argv.company.toUpperCase());
+			pkg.config.appId = pkg.config.appId.replace(
+				/totvs/gi,
+				argv.company
+			);
+			pkg.author = pkg.author.replace(
+				/totvs/gi,
+				argv.company.toUpperCase()
+			);
 
 			fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2));
 
 			console.error("==================================================");
 			console.error("--------------------------------------------------");
 			console.error("A T E N Ç Ã O");
-			console.error("\tRECOMENDA-SE NÃO ENVIAR A MODIFICAÇÂO PARA O REPOSITÓRIO");
+			console.error(
+				"\tRECOMENDA-SE NÃO ENVIAR A MODIFICAÇÂO PARA O REPOSITÓRIO"
+			);
 			console.error(`\tArquivo ${pkgFile} modificado.`);
 			console.error("\tAs chaves abaixo foram modificadas:");
 			console.error(`\t\tconfig.appId = ${oldId} -> ${pkg.config.appId}`);
