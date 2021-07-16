@@ -222,7 +222,10 @@ module.exports = function (gulp, plugins, basedir, argv) {
 
 						mac: {
 							//forceCodeSigning: false
-
+							icon: path.join(
+							 	"icons",
+							 	argv.company
+							),
 							cscLink: certificateFile,
 							cscKeyPassword: certificatePassword,
 							identity:
