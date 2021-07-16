@@ -192,12 +192,8 @@ module.exports = function (gulp, plugins, basedir, argv) {
 
 							//installerSidebar: 'totvs.bmp'
 						},
-
 						linux: {
-							 icon: path.join(
-							 	"icons",
-							 	argv.company
-							),
+							icon: path.join("icons", argv.company),
 							executableName: "monitor",
 							category: "System",
 							desktop: {
@@ -222,10 +218,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 
 						mac: {
 							//forceCodeSigning: false
-							icon: path.join(
-							 	"icons",
-							 	argv.company
-							),
+							icon: path.join("icons", argv.company),
 							cscLink: certificateFile,
 							cscKeyPassword: certificatePassword,
 							identity:
