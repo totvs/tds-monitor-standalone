@@ -46,16 +46,10 @@ module.exports = function (gulp, plugins, basedir, argv) {
 				env.bamboo_CERTIFICATE_PASSWORD ||
 				null;
 
-		console.log(JSON.stringify(env, null, 2));
-
-		// if ((certificateFile === null) || (certificatePassword === null)) {
-		// 	certificateFile = null;
-		// 	certificatePassword = null;
-		// }
-
 		if (!shelljs.test("-e", certificateFile)) {
 			console.error(`Certificate file not found: (${certificateFile})`);
 			certificateFile = null;
+			certificatePassword = null;
 		}
 
 		if (certificateFile !== null) {
@@ -221,8 +215,8 @@ module.exports = function (gulp, plugins, basedir, argv) {
 						mac: {
 							//forceCodeSigning: false
 							icon: path.join("icons", argv.company),
-							//cscLink: certificateFile,
-							//cscKeyPassword: certificatePassword,
+							cscLink: certificateFile,
+							cscKeyPassword: certificatePassword,
 							identity:
 								env.APPLE_ID_IDENTITY ||
 								env.bamboo_APPLE_ID_IDENTITY ||
