@@ -39,12 +39,9 @@ module.exports = function (gulp, plugins, basedir, argv) {
 			targets = ["dir"],
 			arch = bits === 64 ? "x64" : "x86",
 			builderArch = bits === 64 ? "x64" : "ia32",
-			certificateFile =
-				env.CERTIFICATE_FILE || env.bamboo_CERTIFICATE_FILE || null,
-			certificatePassword =
-				env.CERTIFICATE_PASSWORD ||
-				env.bamboo_CERTIFICATE_PASSWORD ||
-				null;
+			certificateFile = null, //env.CERTIFICATE_FILE || env.bamboo_CERTIFICATE_FILE || null,
+			certificatePassword = null;
+		//env.CERTIFICATE_PASSWORD || env.bamboo_CERTIFICATE_PASSWORD || null;
 
 		// if ((certificateFile === null) || (certificatePassword === null)) {
 		// 	certificateFile = null;
