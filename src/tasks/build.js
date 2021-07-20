@@ -46,6 +46,8 @@ module.exports = function (gulp, plugins, basedir, argv) {
 				env.bamboo_CERTIFICATE_PASSWORD ||
 				null;
 
+		console.log(JSON.stringify(env, null, 2));
+
 		// if ((certificateFile === null) || (certificatePassword === null)) {
 		// 	certificateFile = null;
 		// 	certificatePassword = null;
