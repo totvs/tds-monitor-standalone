@@ -87,12 +87,17 @@ if (!fs.existsSync(settingsFile)) {
 if (fs.existsSync(settingsFile)) {
 	let settingsData = fs.readFileSync(settingsFile, { encoding: "utf8" });
 	let settings = JSON.parse(settingsData);
-	let localeCodeSetting = "pt-br";
+	let localeCodeSetting = "en";
+
 	if (settings && settings.config && settings.config.language) {
 		if (settings.config.language === "english") {
 			localeCodeSetting = "en";
 		} else if (settings.config.language === "spanish") {
 			localeCodeSetting = "es";
+		} else if (settings.config.language === "portuguese") {
+			localeCodeSetting = "pt-br";
+		} else if (settings.config.language === "russian") {
+			localeCodeSetting = "ru";
 		}
 	}
 	let nls = {};
