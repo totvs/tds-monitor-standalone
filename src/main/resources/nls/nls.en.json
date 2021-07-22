@@ -1,5 +1,5 @@
 {
-  "TOTVS_MONITOR": "@company@ Monitor",
+  "TOTVS_MONITOR": "TOTVS Monitor",
   "OK": "OK",
   "CONFIRM": "Confirm",
   "CANCEL": "Cancel",
@@ -11,7 +11,7 @@
   "CLOSE": "Close",
   "PROTHEUS": "Protheus",
   "LOGIX": "Logix",
-  "ABOUT_TOTVS_MONITOR": "About @company@ Monitor",
+  "ABOUT_TOTVS_MONITOR": "About TOTVS Monitor",
   "ADD_NEW_SERVER": "Add a new Server",
   "EDIT_SERVER": "Edit Server",
   "NAME": "Name",
