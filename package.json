@@ -23,7 +23,7 @@
     "monitor",
     "totvs"
   ],
-  "author": "NP",
+  "author": "TOTVS",
   "license": "Apache-2.0",
   "devDependencies": {
     "electron": "9.3.1",
