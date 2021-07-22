@@ -15,7 +15,8 @@
     "tag": "git push --follow-tags",
     "prepublishOnly": "npm run clean && npm run build",
     "---MISC---": "",
-    "build-i18n": "tds-build-i18n --nls-folder ./src/main/resources/nls"
+    "build-i18n": "tds-build-i18n --nls-folder ./src/main/resources/nls",
+    "import-i18n": "tds-import-i18n --nls-folder ./src/main/resources/nls --atusx-folder ./atusx --atusx-file tds-totvs-monitor.ts"
   },
   "repository": "https://github.com/totvs/tds-monitor-standalone",
   "keywords": [
