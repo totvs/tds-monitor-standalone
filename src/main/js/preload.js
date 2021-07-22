@@ -100,14 +100,8 @@ if (fs.existsSync(settingsFile)) {
 			localeCodeSetting = "ru";
 		}
 	}
-	let nls = {};
-	if (localeCodeSetting !== "en") {
-		let localeFile = `nls.${localeCodeSetting}.json`;
-		localeFile = path.join(__dirname, "..", "resources", "nls", localeFile);
-		let nlsData = fs.readFileSync(localeFile, { encoding: "utf8" });
-		nls = JSON.parse(nlsData);
-	}
-	translations = nls;
+
+	translations = loadNlsFile(localeCodeSetting);
 }
 
 window.storage = {
@@ -133,3 +127,24 @@ window.storage = {
 		return company;
 	},
 };
+
+function loadNlsFile(localeCode) {
+	const localeFile = path.join(
+		__dirname,
+		"..",
+		"resources",
+		"nls",
+		`nls.${localeCode}.json`
+	);
+	try {
+		const nlsData = fs.readFileSync(localeFile, { encoding: "utf8" });
+
+		return JSON.parse(nlsData);
+	} catch (error) {
+		if (localeCode != "en") {
+			return loadNlsFile("en");
+		} else {
+			return {};
+		}
+	}
+}
