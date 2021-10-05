@@ -37,9 +37,11 @@
     "signtool": "^1.0.0"
   },
   "dependencies": {
+    "@totvs/tds-dev-utils": "^0.0.10",
     "@totvs/tds-languageclient": "0.0.38",
     "@totvs/tds-monitor-frontend": "0.1.34",
-    "yargs": "^16.0.3"
+    "typescript": "^4.4.3",
+    "yargs": "^17.2.1"
   },
   "config": {
     "appId": "com.totvs.monitor"

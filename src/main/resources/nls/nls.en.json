@@ -20,7 +20,7 @@
   "INVALID_SERVER_NAME": "Invalid server name",
   "INVALID_SERVER_TYPE_SELECTION": "Invalid server type",
   "INVALID_ADDRESS": "Invalid address",
-  "INVALID_PORT": "Porta inválida",
+  "INVALID_PORT": "Invalid port",
   "INVALID_SERVER_PORT": "Invalid server port",
   "SERVER_DATA_ALREADY_REGISTERED": "Server data already registered",
   "VALIDATE_ERROR": "Unable to validate the server",
@@ -90,6 +90,6 @@
   "DO_SEND_MESSAGE": "Send message",
   "DO_DISCONNECT": "Disconnect",
   "DO_OTHER_ACTIONS": "Other Actions",
-  "INVALID_SERVER_ADDRESS": "Endereço de servidor inválido",
-  "DISABLED": "Desativado "
+  "INVALID_SERVER_ADDRESS": "Invalid server address",
+  "DISABLED": "Deactivated"
 }
