@@ -1,6 +1,6 @@
 /* tslint:disable */
-// TOTVS TypeScript translation resource
-// Reference date : 20211005
+// TOTVS TypeScript translaton resource
+// Reference date : 20211006
 
 export const literalsEsES = {
   str0001: "TOTVS Monitor",
