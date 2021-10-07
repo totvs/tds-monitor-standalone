@@ -1,6 +1,6 @@
 /* tslint:disable */
-// TOTVS TypeScript translation resource
-// Reference date : 20210722
+// TOTVS TypeScript translaton resource
+// Reference date : 20211006
 
 export const literalsEnUS = {
   str0001: "TOTVS Monitor",
@@ -24,7 +24,7 @@ export const literalsEnUS = {
   str0019: "Invalid server name",
   str0020: "Invalid server type",
   str0021: "Invalid address",
-  str0022: "Porta inválida",
+  str0022: "Invalid port",
   str0023: "Invalid server port",
   str0024: "Server data already registered",
   str0025: "Unable to validate the server",
@@ -94,6 +94,6 @@ export const literalsEnUS = {
   str0089: "Send message",
   str0090: "Disconnect",
   str0091: "Other Actions",
-  str0092: "Endereço de servidor inválido",
-  str0093: "Desativado "
+  str0092: "Invalid server address",
+  str0093: "Deactivated"
 };

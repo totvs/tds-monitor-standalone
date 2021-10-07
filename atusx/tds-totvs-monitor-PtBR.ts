@@ -1,6 +1,6 @@
 /* tslint:disable */
-// TOTVS TypeScript translation resource
-// Reference date : 20210722
+// TOTVS TypeScript translaton resource
+// Reference date : 20211006
 
 export const literalsPtBR = {
   str0001: "TOTVS Monitor",
