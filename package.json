@@ -17,7 +17,8 @@
     "---MISC---": "",
     "build-i18n:totvs": "tds-build-i18n --nls-folder ./src/main/resources/nls --company totvs",
     "build-i18n:np": "tds-build-i18n --nls-folder ./src/main/resources/nls  --company np",
-    "import-i18n": "tds-import-i18n --nls-folder ./src/main/resources/nls --atusx-folder ./atusx --atusx-file tds-totvs-monitor.ts"
+    "import-i18n": "tds-import-i18n --nls-folder ./src/main/resources/nls --atusx-folder ./atusx --atusx-file tds-totvs-monitor.ts",
+    "link": "npm link ../tds-monitor-frontend"
   },
   "repository": "https://github.com/totvs/tds-monitor-standalone",
   "keywords": [
@@ -39,7 +40,7 @@
   "dependencies": {
     "@totvs/tds-dev-utils": "0.0.12",
     "@totvs/tds-languageclient": "0.0.38",
-    "@totvs/tds-monitor-frontend": "0.1.34",
+    "@totvs/tds-monitor-frontend": "0.1.37",
     "typescript": "^4.4.3",
     "yargs": "^16.0.3"
   },
