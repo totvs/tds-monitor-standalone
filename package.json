@@ -38,8 +38,8 @@
   },
   "dependencies": {
     "@totvs/tds-dev-utils": "0.0.12",
-    "@totvs/tds-languageclient": "0.0.38",
-    "@totvs/tds-monitor-frontend": "0.1.39",
+    "@totvs/tds-languageclient": "0.0.41",
+    "@totvs/tds-monitor-frontend": "0.1.42",
     "yargs": "^16.0.3"
   },
   "config": {
