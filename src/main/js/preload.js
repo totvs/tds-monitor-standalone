@@ -10,9 +10,13 @@ let mainWindow = getCurrentWindow(),
 	pkg = require("../../../package.json"),
 	translations = {};
 
+const company = pkg.config.appId.split(".")[1];
+
 window.ipcRenderer = ipcRenderer;
 window.languageClient =
-	require("@totvs/tds-languageclient").TdsLanguageClient.instance({logging: window.process.argv.includes("--logging")});
+	require("@totvs/tds-languageclient").TdsLanguageClient.instance({
+		logging: window.process.argv.includes("--logging"),
+	});
 window.versions = {
 	main: pkg.version,
 	"@totvs/tds-languageclient": pkg.dependencies["@totvs/tds-languageclient"],
@@ -83,22 +87,21 @@ if (!fs.existsSync(settingsFile)) {
 if (fs.existsSync(settingsFile)) {
 	let settingsData = fs.readFileSync(settingsFile, { encoding: "utf8" });
 	let settings = JSON.parse(settingsData);
-	let localeCodeSetting = "pt-br";
+	let localeCodeSetting = "en";
+
 	if (settings && settings.config && settings.config.language) {
 		if (settings.config.language === "english") {
 			localeCodeSetting = "en";
 		} else if (settings.config.language === "spanish") {
 			localeCodeSetting = "es";
+		} else if (settings.config.language === "portuguese") {
+			localeCodeSetting = "pt-br";
+		} else if (settings.config.language === "russian") {
+			localeCodeSetting = "ru";
 		}
 	}
-	let nls = {};
-	if (localeCodeSetting !== "en") {
-		let localeFile = `nls.${localeCodeSetting}.json`;
-		localeFile = path.join(__dirname, "..", "resources", "nls", localeFile);
-		let nlsData = fs.readFileSync(localeFile, { encoding: "utf8" });
-		nls = JSON.parse(nlsData);
-	}
-	translations = nls;
+
+	translations = loadNlsFile(localeCodeSetting);
 }
 
 window.storage = {
@@ -119,4 +122,29 @@ window.storage = {
 	translations: function () {
 		return translations;
 	},
+
+	company: function () {
+		return company;
+	},
 };
+
+function loadNlsFile(localeCode) {
+	const localeFile = path.join(
+		__dirname,
+		"..",
+		"resources",
+		"nls",
+		`nls.${localeCode}.json`
+	);
+	try {
+		const nlsData = fs.readFileSync(localeFile, { encoding: "utf8" });
+
+		return JSON.parse(nlsData);
+	} catch (error) {
+		if (localeCode != "en") {
+			return loadNlsFile("en");
+		} else {
+			return {};
+		}
+	}
+}

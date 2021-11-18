@@ -1,33 +1,34 @@
-'use strict';
+"use strict";
 
-const path = require('path'),
-	Q = require('q'),
+const path = require("path"),
+	Q = require("q"),
 	builder = require("electron-builder"),
-	shelljs = require('shelljs'),
+	shelljs = require("shelljs"),
+	fs = require("fs"),
 	Platform = builder.Platform,
 	Arch = builder.Arch;
 
-module.exports = function(gulp, plugins, basedir, argv) {
-	const pkg = require(path.join(basedir, 'package.json')),
-		finalName = 'monitor-electron';
+module.exports = function (gulp, plugins, basedir, argv) {
+	adjustPackageJson(argv);
 
-	let channel = 'latest';
+	const pkg = require(path.join(basedir, "package.json")),
+		finalName = "monitor-electron";
 
-	if (/\d+\.\d+\.\d+-SNAPSHOT/igm.test(pkg.version)) {
-		channel = 'snapshot';
+	let channel = "latest";
+
+	if (/\d+\.\d+\.\d+-SNAPSHOT/gim.test(pkg.version)) {
+		channel = "snapshot";
+	} else if (/\d+\.\d+\.\d+-RC\d*/gim.test(pkg.version)) {
+		channel = "rc";
 	}
-	else if (/\d+\.\d+\.\d+-RC\d*/igm.test(pkg.version)) {
-		channel = 'rc';
-	}
 
-	return function() {
+	return function () {
 		let targets = getTargetPlatforms(argv),
 			archs = getTargetArchs(argv);
 
 		return archs.reduce((promise, bits) => {
 			return targets.reduce((promise, os) => {
-				return promise
-					.then(() => electronBuild(os, bits));
+				return promise.then(() => electronBuild(os, bits));
 			}, promise);
 		}, Q());
 	};
@@ -35,210 +36,330 @@ module.exports = function(gulp, plugins, basedir, argv) {
 	function electronBuild(os, bits) {
 		let env = process.env,
 			identifier = `${os}-${bits}`,
-			targets = ['dir'],
-			arch = ((bits === 64) ? 'x64' : 'x86'),
-			builderArch = ((bits === 64) ? 'x64' : 'ia32'),
-			certificateFile = env.CERTIFICATE_FILE || env.bamboo_CERTIFICATE_FILE || null,
-			certificatePassword = env.CERTIFICATE_PASSWORD || env.bamboo_CERTIFICATE_PASSWORD || null;
+			targets = ["dir"],
+			arch = bits === 64 ? "x64" : "x86",
+			builderArch = bits === 64 ? "x64" : "ia32",
+			certificateFile =
+				env.CERTIFICATE_FILE || env.bamboo_CERTIFICATE_FILE || null,
+			certificatePassword =
+				env.CERTIFICATE_PASSWORD ||
+				env.bamboo_CERTIFICATE_PASSWORD ||
+				null;
 
-		// if ((certificateFile === null) || (certificatePassword === null)) {
-		// 	certificateFile = null;
-		// 	certificatePassword = null;
-		// }
-
-		if (!shelljs.test('-e', certificateFile)) {
-			console.error(`Certificate file not found: (${certificateFile})`)
+		if (!shelljs.test("-e", certificateFile)) {
+			console.error(`Certificate file not found: (${certificateFile})`);
 			certificateFile = null;
+			certificatePassword = null;
 		}
 
 		if (certificateFile !== null) {
 			const extension = path.extname(certificateFile);
 
-			if ((extension === '.cer') || (extension === '.crt')) {
+			if (extension === ".cer" || extension === ".crt") {
 				let originalFile = certificateFile;
 				certificateFile = path.join(
 					shelljs.tempdir(),
-					path.basename(certificateFile, extension) + '.pfx'
+					path.basename(certificateFile, extension) + ".pfx"
 				);
 
 				console.log(`Copying ${originalFile} to ${certificateFile}`);
 
 				shelljs.cp(originalFile, certificateFile);
 			}
-
-
 		}
 
-
-
 		if (argv.targets) {
-			targets = argv.targets.split(',');
+			targets = argv.targets.split(",");
 		}
 
 		return targets.reduce((promise, target) => {
-			return promise
-				.then(() => {
-					console.log(`Electron Builder ${identifier} ${target}`);
+			return promise.then(() => {
+				console.log(
+					`Electron Builder ${identifier} ${target} ${argv.company.toUpperCase()}`
+				);
 
-					const appDir = basedir,	//path.join(basedir, 'target', 'staging', identifier),
-						targetDir = path.join(basedir, 'target', 'dist', identifier),
-						artifactName = `${finalName}-\${version}-${os}-${arch}`,
-						resourcesBasedir = path.join(basedir, "src", "main", "resources");
+				const appDir = basedir, //path.join(basedir, 'target', 'staging', identifier),
+					targetDir = path.join(
+						basedir,
+						"target",
+						"dist",
+						identifier
+					),
+					artifactName = getArtifactName(argv, finalName, os, arch),
+					resourcesBasedir = path.join(
+						basedir,
+						"src",
+						"main",
+						"resources"
+					);
 
-					console.log('certificateFile', certificateFile);
-					console.log('certificatePassword', certificatePassword);
+				console.log("certificateFile", certificateFile);
+				console.log("certificatePassword", certificatePassword);
 
-					return builder.build({
-						targets: Platform[os.toUpperCase()].createTarget(target, Arch[builderArch]),
-						publish: argv.publish ? 'always' : 'never',
+				return builder.build({
+					targets: Platform[os.toUpperCase()].createTarget(
+						target,
+						Arch[builderArch]
+					),
+					publish: argv.publish ? "always" : "never",
 
-						config: {
-							appId: pkg.config.appId,
-							artifactName: `${artifactName}.\${ext}`,
-							productName: 'totvs-monitor',
+					config: {
+						appId: pkg.config.appId,
+						artifactName: `${artifactName}.\${ext}`,
+						productName: getProductName(argv),
 
-							afterPack: async (context) => {
-								const bin = path.join('node_modules', '@totvs', 'tds-monitor-frontend', 'node_modules', '@totvs', 'tds-languageclient', 'node_modules', '@totvs', 'tds-ls', 'bin'),
-									intermediate = path.join('target', 'dist', identifier, '*-unpacked', 'resources', 'app.asar.unpacked'),
-									target = path.join(basedir, intermediate, bin);
+						afterPack: async (context) => {
+							const bin = path.join(
+									"node_modules",
+									"@totvs",
+									"tds-monitor-frontend",
+									"node_modules",
+									"@totvs",
+									"tds-languageclient",
+									"node_modules",
+									"@totvs",
+									"tds-ls",
+									"bin"
+								),
+								intermediate = path.join(
+									"target",
+									"dist",
+									identifier,
+									"*-unpacked",
+									"resources",
+									"app.asar.unpacked"
+								),
+								target = path.join(basedir, intermediate, bin);
 
-								shelljs.rm('-rf', target);
-							},
+							shelljs.rm("-rf", target);
+						},
 
-							afterSign: path.join(resourcesBasedir, "scripts", "notarize.js"),
+						afterSign: path.join(
+							resourcesBasedir,
+							"scripts",
+							"notarize.js"
+						),
 
-							publish: {
-								provider: 'github',
-								token: env.GITHUB_TOKEN || env.bamboo_GITHUB_TOKEN || null
-							},
+						publish: {
+							provider: "github",
+							token:
+								env.GITHUB_TOKEN ||
+								env.bamboo_GITHUB_TOKEN ||
+								null,
+						},
 
-							win: {
-								sign: path.join(resourcesBasedir, "scripts", "sign-windows.js"),
-								icon: path.join('icons', 'application.ico'),
-								publisherName: ['TOTVS S/A', 'TOTVS S.A', 'TOTVS S.A.'],
-								certificateFile: certificateFile,
-								certificatePassword: certificatePassword,
-								signingHashAlgorithms: ['sha1']
-							},
-							msi: {
-								perMachine: true
-							},
-							nsis: {
-								artifactName: `${artifactName}.setup.\${ext}`,
-								allowToChangeInstallationDirectory: true,
-								//displayLanguageSelector: true,
-								installerHeaderIcon: path.join('icons', 'application.ico'),
-								installerLanguages: [
-									'pt_BR', 'es_ES', 'en_US', 'ru_RU'
-								],
-								oneClick: false,
-								perMachine: true,
-								uninstallDisplayName: 'TOTVS Monitor'
-
-								//installerSidebar: 'totvs.bmp'
-							},
-
-							linux: {
-								executableName: 'monitor',
-								category: 'System',
-								desktop: {
-									Name: 'TOTVS Monitor',
-									Type: 'Application',
-									Keywords: 'TOTVS;Protheus;Monitor'
-								},
-								maintainer: "TOTVS",
-								vendor: "TOTVS"
-							},
-							deb: {
-								compression: "gz"
-							},
-							rpm: {
-								compression: "bzip2"
-							},
-
-							mac: {
-								//forceCodeSigning: false
-
-								cscLink: certificateFile,
-								cscKeyPassword: certificatePassword,
-
-								identity: env.APPLE_ID_IDENTITY || env.bamboo_APPLE_ID_IDENTITY || null,
-								hardenedRuntime: true,
-								gatekeeperAssess: false,
-								entitlements: path.join(resourcesBasedir, "plist", "entitlements.mac.plist"),
-								entitlementsInherit: path.join(resourcesBasedir, "plist", "entitlements.mac.plist")
-							},
-							dmg: {
-								sign: false
-							},
-
-							directories: {
-								output: targetDir,
-								//app: appDir,
-								buildResources: path.join(appDir, 'src', 'main', 'resources')
-							},
-
-							files: [
-								path.join('src', 'main', 'js'),
-								path.join('src', 'main', 'resources', 'icons'),
-								path.join('src', 'main', 'resources', 'nls')
+						win: {
+							//sign: path.join(resourcesBasedir, "scripts", "sign-windows.js"),
+							icon: path.join(
+								"icons",
+								argv.company,
+								"application.ico"
+							),
+							publisherName: [
+								getPublisherName(argv),
+								getPublisherName(argv),
+								getPublisherName(argv),
 							],
+							certificateFile: certificateFile,
+							certificatePassword: certificatePassword,
+							signingHashAlgorithms: ["sha1"],
+						},
+						msi: {
+							perMachine: true,
+						},
+						nsis: {
+							artifactName: `${artifactName}.setup.\${ext}`,
+							allowToChangeInstallationDirectory: true,
+							//displayLanguageSelector: true,
+							installerHeaderIcon: path.join(
+								"icons",
+								argv.company,
+								"application.ico"
+							),
+							installerLanguages: [
+								"pt_BR",
+								"es_ES",
+								"en_US",
+								"ru_RU",
+							],
+							oneClick: false,
+							perMachine: true,
+							uninstallDisplayName: getDisplayName(argv),
 
-							asarUnpack: [
-								`node_modules/@totvs/tds-languageclient/node_modules/@totvs/tds-ls/bin/${os}/*`
-							]
-						}
-					});
+							//installerSidebar: 'totvs.bmp'
+						},
+						linux: {
+							icon: path.join("icons", argv.company),
+							executableName: "monitor",
+							category: "System",
+							desktop: {
+								Name: getDisplayName(argv),
+								Type: "Application",
+								Icon: path.join(
+									"icons",
+									argv.company,
+									"application.ico"
+								),
+								Keywords: `${argv.company.toUpperCase()};Protheus;Monitor`,
+							},
+							maintainer: `${getPublisherName(argv)}`,
+							vendor: `${getPublisherName(argv)}`,
+						},
+						deb: {
+							compression: "gz",
+						},
+						rpm: {
+							compression: "bzip2",
+						},
+
+						mac: {
+							//forceCodeSigning: false
+							icon: path.join("icons", argv.company),
+							cscLink: certificateFile,
+							cscKeyPassword: certificatePassword,
+							identity:
+								env.APPLE_ID_IDENTITY ||
+								env.bamboo_APPLE_ID_IDENTITY ||
+								null,
+							hardenedRuntime: true,
+							gatekeeperAssess: false,
+							entitlements: path.join(
+								resourcesBasedir,
+								"plist",
+								"entitlements.mac.plist"
+							),
+							entitlementsInherit: path.join(
+								resourcesBasedir,
+								"plist",
+								"entitlements.mac.plist"
+							),
+						},
+						dmg: {
+							sign: false,
+						},
+
+						directories: {
+							output: targetDir,
+							//app: appDir,
+							buildResources: path.join(
+								appDir,
+								"src",
+								"main",
+								"resources"
+							),
+						},
+
+						files: [
+							path.join("src", "main", "js"),
+							path.join(
+								"src",
+								"main",
+								"resources",
+								"icons",
+								argv.company
+							),
+							path.join("src", "main", "resources", "nls"),
+						],
+
+						asarUnpack: [
+							`node_modules/@totvs/tds-languageclient/node_modules/@totvs/tds-ls/bin/${os}/*`,
+						],
+					},
 				});
+			});
 		}, Q());
 	}
 
 	//
 
-
-
 	function getTargetArchs(argv) {
 		let archs = [];
 
-		if (argv.x86)
-			archs.push(32);
+		if (argv.x86) archs.push(32);
 
-		if (argv.x64)
-			archs.push(64);
+		if (argv.x64) archs.push(64);
 
-		if (archs.length === 0)
-			archs.push(64);
+		if (archs.length === 0) archs.push(64);
 
 		return archs;
 	}
 
+	function getPublisherName(argv) {
+		return argv.company == "totvs" ? "TOTVS S.A." : "National Platform";
+	}
+
+	function getProductName(argv) {
+		return `monitor-electron-${argv.company}`;
+	}
+
+	function getArtifactName(argv, finalName, os, arch) {
+		const company = argv.company;
+
+		return `${finalName}-${
+			company === "totvs" ? "" : `${company}-`
+		}\${version}-${os}-${arch}`;
+	}
+
+	function getDisplayName(argv) {
+		return `${argv.company.toUpperCase()} Monitor`;
+	}
 
 	function getTargetPlatforms(argv) {
 		let targets = [];
 
-		if (argv.windows)
-			targets.push('windows');
+		if (argv.windows) targets.push("windows");
 
-		if (argv.linux)
-			targets.push('linux');
+		if (argv.linux) targets.push("linux");
 
-		if (argv.mac)
-			targets.push('mac');
+		if (argv.mac) targets.push("mac");
 
-		if (targets.length === 0)
-			targets.push(getCurrentPlatform());
+		if (targets.length === 0) targets.push(getCurrentPlatform());
 
 		return targets;
 	}
 
 	function getCurrentPlatform() {
 		switch (process.platform) {
-			case 'win32':
-				return 'windows';
-			case 'darwin':
-				return 'mac';
+			case "win32":
+				return "windows";
+			case "darwin":
+				return "mac";
 			default:
 				return process.platform;
+		}
+	}
+
+	function adjustPackageJson(argv) {
+		const pkgFile = path.join(basedir, "package.json");
+		const pkg = require(pkgFile);
+
+		if (argv.company && argv.company != "totvs") {
+			const oldId = pkg.config.appId;
+			const oldAuthor = pkg.author;
+
+			pkg.config.appId = pkg.config.appId.replace(
+				/totvs/gi,
+				argv.company
+			);
+			pkg.author = pkg.author.replace(
+				/totvs/gi,
+				argv.company.toUpperCase()
+			);
+
+			fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2));
+
+			console.error("==================================================");
+			console.error("--------------------------------------------------");
+			console.error("A T E N Ç Ã O");
+			console.error(
+				"\tRECOMENDA-SE NÃO ENVIAR A MODIFICAÇÂO PARA O REPOSITÓRIO"
+			);
+			console.error(`\tArquivo ${pkgFile} modificado.`);
+			console.error("\tAs chaves abaixo foram modificadas:");
+			console.error(`\t\tconfig.appId = ${oldId} -> ${pkg.config.appId}`);
+			console.error(`\t\tauthor       = ${oldAuthor} -> ${pkg.author}`);
+			console.error("--------------------------------------------------");
+			console.error("==================================================");
 		}
 	}
 };

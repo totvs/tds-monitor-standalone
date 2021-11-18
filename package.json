@@ -1,20 +1,26 @@
 {
   "name": "@totvs/tds-monitor-standalone",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "description": "TDS Monitor",
   "main": "src/main/js/index.js",
   "scripts": {
     "start": "electron .",
-    "startLogging": "npm run start -- --logging",
+    "startLogging": "npm run start -- --logging --dev",
     "build": "gulp build",
+    "build:totvs": "gulp build --targets=nsis,zip -LLLL --company=totvs",
+    "build:np": "gulp build --targets=nsis,zip -LLLL --company=np",
     "clean": "gulp clean",
     "---RELEASE---": "",
     "release": "npx standard-version",
     "tag": "git push --follow-tags",
-    "to_publish": "npm publish",
     "prepublishOnly": "npm run clean && npm run build",
     "---MISC---": "",
-    "link": "npm link @totvs/tds-languageclient @totvs/tds-monitor-frontend"
+    "build-i18n:totvs": "tds-build-i18n --nls-folder ./src/main/resources/nls --company totvs",
+    "build-i18n:np": "tds-build-i18n --nls-folder ./src/main/resources/nls  --company np",
+    "import-i18n": "tds-import-i18n --nls-folder ./src/main/resources/nls --atusx-folder ./atusx --atusx-file tds-totvs-monitor.ts",
+    "--LINK--": "",
+    "link:tds-monitor-frontend": "npm link W:\\ws_tds_vscode\\tds-monitor-frontend",
+    "link:tds-languageclient": "npm link W:\\ws_tds_vscode\\tds-languageclient"
   },
   "repository": "https://github.com/totvs/tds-monitor-standalone",
   "keywords": [
@@ -25,18 +31,18 @@
   "author": "TOTVS",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@totvs/tds-dev-utils": "0.0.12",
     "electron": "9.3.1",
     "electron-builder": "22.10.5",
     "electron-notarize": "^1.0.0",
     "gulp": "^4.0.2",
     "q": "^1.5.1",
     "shelljs": "^0.8.4",
-    "signtool": "^1.0.0",
-    "vscode-nls-dev": "^3.3.2"
+    "signtool": "^1.0.0"
   },
   "dependencies": {
-    "@totvs/tds-languageclient": "0.0.37",
-    "@totvs/tds-monitor-frontend": "0.1.28",
+    "@totvs/tds-languageclient": "0.0.41",
+    "@totvs/tds-monitor-frontend": "0.1.42",
     "yargs": "^16.0.3"
   },
   "config": {
