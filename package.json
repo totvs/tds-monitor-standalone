@@ -17,10 +17,7 @@
     "---MISC---": "",
     "build-i18n:totvs": "tds-build-i18n --nls-folder ./src/main/resources/nls --company totvs",
     "build-i18n:np": "tds-build-i18n --nls-folder ./src/main/resources/nls  --company np",
-    "import-i18n": "tds-import-i18n --nls-folder ./src/main/resources/nls --atusx-folder ./atusx --atusx-file tds-totvs-monitor.ts",
-    "--LINK--": "",
-    "link:tds-monitor-frontend": "npm link W:\\ws_tds_vscode\\tds-monitor-frontend",
-    "link:tds-languageclient": "npm link W:\\ws_tds_vscode\\tds-languageclient"
+    "import-i18n": "tds-import-i18n --nls-folder ./src/main/resources/nls --atusx-folder ./atusx --atusx-file tds-totvs-monitor.ts"
   },
   "repository": "https://github.com/totvs/tds-monitor-standalone",
   "keywords": [
@@ -31,7 +28,6 @@
   "author": "TOTVS",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@totvs/tds-dev-utils": "0.0.12",
     "electron": "9.3.1",
     "electron-builder": "22.10.5",
     "electron-notarize": "^1.0.0",
@@ -41,8 +37,9 @@
     "signtool": "^1.0.0"
   },
   "dependencies": {
-    "@totvs/tds-languageclient": "0.0.41",
-    "@totvs/tds-monitor-frontend": "0.1.42",
+    "@totvs/tds-dev-utils": "0.0.12",
+    "@totvs/tds-languageclient": "0.0.38",
+    "@totvs/tds-monitor-frontend": "0.1.39",
     "yargs": "^16.0.3"
   },
   "config": {
