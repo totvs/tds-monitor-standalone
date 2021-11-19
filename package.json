@@ -8,15 +8,15 @@
     "startLogging": "npm run start -- --logging --dev",
     "build": "gulp build",
     "build:totvs": "gulp build --targets=nsis,zip -LLLL --company=totvs",
-    "build:np": "gulp build --targets=nsis,zip -LLLL --company=np",
+    "build:np": "gulp build --targets=nsis,zip -LLLL --company=np ",
     "clean": "gulp clean",
     "---RELEASE---": "",
     "release": "npx standard-version",
     "tag": "git push --follow-tags",
     "prepublishOnly": "npm run clean && npm run build",
     "---MISC---": "",
-    "build-i18n:totvs": "tds-build-i18n --nls-folder ./src/main/resources/nls --company totvs",
-    "build-i18n:np": "tds-build-i18n --nls-folder ./src/main/resources/nls  --company np",
+    "build-i18n:totvs": "tds-build-i18n --nls-folder ./src/main/resources/nls --company totvs --verbose --profile",
+    "build-i18n:np": "tds-build-i18n --nls-folder ./src/main/resources/nls  --company np --verbose --profile",
     "import-i18n": "tds-import-i18n --nls-folder ./src/main/resources/nls --atusx-folder ./atusx --atusx-file tds-totvs-monitor.ts"
   },
   "repository": "https://github.com/totvs/tds-monitor-standalone",
@@ -34,12 +34,13 @@
     "gulp": "^4.0.2",
     "q": "^1.5.1",
     "shelljs": "^0.8.4",
-    "signtool": "^1.0.0"
+    "signtool": "^1.0.0",
+    "@totvs/tds-dev-utils": "0.0.14"
   },
   "dependencies": {
-    "@totvs/tds-dev-utils": "0.0.13",
     "@totvs/tds-languageclient": "0.0.42",
     "@totvs/tds-monitor-frontend": "0.1.43",
+    "typescript": "^4.5.2",
     "yargs": "^16.0.3"
   },
   "config": {
