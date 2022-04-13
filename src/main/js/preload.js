@@ -86,7 +86,11 @@ if (!fs.existsSync(settingsFile)) {
 
 if (fs.existsSync(settingsFile)) {
 	let settingsData = fs.readFileSync(settingsFile, { encoding: "utf8" });
-	let settings = JSON.parse(settingsData);
+	let settings = {};
+	try {
+		settings = JSON.parse(settingsData);
+	} catch (ex) {
+	}
 	let localeCodeSetting = "en";
 
 	if (settings && settings.config && settings.config.language) {
