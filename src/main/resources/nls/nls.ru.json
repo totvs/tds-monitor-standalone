@@ -89,7 +89,9 @@
   "DO_AUTO_UPDATE": "Автоматическое обновление",
   "DO_SEND_MESSAGE": "Отправить сообщение",
   "DO_DISCONNECT": "Отключить соединение",
+  "DO_CHANGE_ENCODING": "Изменить кодировку",
   "DO_OTHER_ACTIONS": "Другие Действия",
   "INVALID_SERVER_ADDRESS": "Неверный адрес сервера",
-  "DISABLED": "Деактивирован"
+  "DISABLED": "Деактивирован",
+  "ENCODING_CHANGE": "Изменить кодировку среды"
 }

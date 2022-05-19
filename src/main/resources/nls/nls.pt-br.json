@@ -89,7 +89,9 @@
   "DO_AUTO_UPDATE": "Atualização automática",
   "DO_SEND_MESSAGE": "Enviar Mensagem",
   "DO_DISCONNECT": "Desconectar",
+  "DO_CHANGE_ENCODING": "Alterar codificação",
   "DO_OTHER_ACTIONS": "Outras Ações",
   "INVALID_SERVER_ADDRESS": "Endereço de servidor inválido",
-  "DISABLED": "Desativado "
+  "DISABLED": "Desativado ",
+  "ENCODING_CHANGE": "Alterar a codificação do ambiente"
 }
