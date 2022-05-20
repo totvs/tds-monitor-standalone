@@ -70,7 +70,20 @@ module.exports = function (gulp, plugins, basedir, argv) {
 			}
 		}
 
-		if (argv.targets) {
+		if (argv.installer) {
+			switch (os) {
+				case 'windows':
+					targets = ['nsis', 'zip'];
+					break;
+				case 'linux':
+					targets = ['deb', 'rpm', 'tar.gz'];
+					break;
+				case 'darwin':
+					targets = ['default'];
+					break;
+			}
+		}
+		else if (argv.targets) {
 			targets = argv.targets.split(",");
 		}
 
