@@ -39,6 +39,12 @@ let tasksDir = path.join(__dirname, "src", "tasks"),
 			type: "boolean",
 			default: false,
 		})
+		.options("installer", {
+			alias: ["i"],
+			describe: "Build installer files",
+			type: "boolean",
+			default: false,
+		})
 		.options("company", {
 			describe: "Distribution brand",
 			type: "string",
