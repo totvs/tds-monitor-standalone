@@ -39,20 +39,22 @@ module.exports = function (gulp, plugins, basedir, argv) {
 			targets = ["dir"],
 			arch = bits === 64 ? "x64" : "x86",
 			builderArch = bits === 64 ? "x64" : "ia32",
-			certificateFile =
-				env.CERTIFICATE_FILE || env.bamboo_CERTIFICATE_FILE || null,
-			certificatePassword =
-				env.CERTIFICATE_PASSWORD ||
-				env.bamboo_CERTIFICATE_PASSWORD ||
-				null;
+			certificateFile = env.CERTIFICATE_FILE || env.bamboo_CERTIFICATE_FILE || null,
+			certificatePassword = env.CERTIFICATE_PASSWORD || env.bamboo_CERTIFICATE_PASSWORD || null;
 
-		if (!shelljs.test("-e", certificateFile)) {
-			console.error(`Certificate file not found: (${certificateFile})`);
-			certificateFile = null;
-			certificatePassword = null;
+		let validCertificate = (certificateFile !== null);
+		if ((os === 'darwin') && (certificatePassword === null)) {
+			validCertificate = false;
 		}
 
-		if (certificateFile !== null) {
+		if (validCertificate) {
+			if (!shelljs.test("-e", certificateFile)) {
+				validCertificate = false;
+				console.error(`Certificate file not found: (${certificateFile})`);
+			}
+		}
+
+		if (validCertificate) {
 			const extension = path.extname(certificateFile);
 
 			if (extension === ".cer" || extension === ".crt") {
@@ -149,7 +151,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 						},
 
 						win: {
-							//sign: path.join(resourcesBasedir, "scripts", "sign-windows.js"),
+							sign: validCertificate ? path.join(resourcesBasedir, "scripts", "sign-windows.js") : null,
 							icon: path.join(
 								"icons",
 								argv.company,
