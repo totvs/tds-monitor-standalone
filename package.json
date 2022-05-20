@@ -28,20 +28,20 @@
   "author": "TOTVS",
   "license": "Apache-2.0",
   "devDependencies": {
-    "electron": "9.3.1",
-    "electron-builder": "22.10.5",
-    "electron-notarize": "^1.0.0",
-    "gulp": "^4.0.2",
-    "q": "^1.5.1",
-    "shelljs": "^0.8.4",
-    "signtool": "^1.0.0",
-    "@totvs/tds-dev-utils": "^0.0.15"
+    "electron": "18.2.4",
+    "electron-builder": "23.0.3",
+    "electron-notarize": "1.2.1",
+    "gulp": "4.0.2",
+    "shelljs": "0.8.5",
+    "signtool": "1.0.0",
+    "@totvs/tds-dev-utils": "0.0.15"
   },
   "dependencies": {
+    "@electron/remote": "2.0.8",
     "@totvs/tds-languageclient": "0.0.46",
     "@totvs/tds-monitor-frontend": "0.1.48",
-    "typescript": "^4.5.2",
-    "yargs": "^16.0.3"
+    "typescript": "4.6.4",
+    "yargs": "17.5.1"
   },
   "config": {
     "appId": "com.totvs.monitor"

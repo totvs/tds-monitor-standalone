@@ -1,7 +1,6 @@
 "use strict";
 
 const path = require("path"),
-	Q = require("q"),
 	builder = require("electron-builder"),
 	shelljs = require("shelljs"),
 	fs = require("fs"),
@@ -30,7 +29,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 			return targets.reduce((promise, os) => {
 				return promise.then(() => electronBuild(os, bits));
 			}, promise);
-		}, Q());
+		}, Promise.resolve());
 	};
 
 	function electronBuild(os, bits) {
@@ -269,7 +268,7 @@ module.exports = function (gulp, plugins, basedir, argv) {
 					},
 				});
 			});
-		}, Q());
+		}, Promise.resolve());
 	}
 
 	//
