@@ -43,7 +43,7 @@ let tasksDir = path.join(__dirname, "src", "tasks"),
 			describe: "Distribution brand",
 			type: "string",
 			choices: ["totvs", "np"],
-			requiresArg: true,
+			default: "totvs",
 		}).argv;
 
 tasks.forEach((filename) => {
