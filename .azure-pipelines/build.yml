@@ -4,6 +4,7 @@ trigger:
 stages:
 - stage: TOTVS
   displayName: "TOTVS"
+  dependsOn: []
 
   jobs:
   - template: templates/build.yml
@@ -12,6 +13,7 @@ stages:
 
 - stage: NP
   displayName: "NP"
+  dependsOn: []
 
   jobs:
   - template: templates/build.yml
