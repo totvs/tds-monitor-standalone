@@ -54,12 +54,12 @@ jobs:
     displayName: "npm install @totvs/tds-dev-utils"
 
   - script: |
-      npm run build-i18n:totvs -- --profile
-    displayName: "npm build i18n"
+      npm run build-i18n:${{ parameters.company }} -- --profile
+    displayName: "npm run build-i18n"
 
   - script: |
       npm run build -- --targets=$(TARGET_INSTALLER) -LLLL --company=${{ parameters.company }}
-    displayName: "npm build"
+    displayName: "npm run build"
 
   - task: CopyFiles@2
     displayName: "Filter artifact files"
