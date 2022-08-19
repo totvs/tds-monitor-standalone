@@ -1,0 +1,19 @@
+trigger:
+- master
+
+stages:
+- stage: TOTVS
+  displayName: "TOTVS"
+
+  jobs:
+  - template: templates/build.yml
+    parameters:
+	  company: totvs
+
+- stage: NP
+  displayName: "NP"
+
+  jobs:
+  - template: templates/build.yml
+    parameters:
+	  company: np
