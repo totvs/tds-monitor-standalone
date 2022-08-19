@@ -11,20 +11,23 @@ stages:
       matrix:
         Windows:
           TARGET_POOL: 'webapp-harpia-pool'
-          TARGET_OS: 'Windows_NT'
+          TARGET_AGENT_OS: 'Windows_NT'
           TARGET_INSTALLER: 'nsis,zip'
+          TARGET_OS: 'windows'
         Linux:
           TARGET_POOL: 'moving'
-          TARGET_OS: 'Linux'
+          TARGET_AGENT_OS: 'Linux'
           TARGET_INSTALLER: 'deb,rpm,tar.gz'
+          TARGET_OS: 'linux'
         Mac:
           TARGET_POOL: 'webapp-harpia-pool'
-          TARGET_OS: 'Darwin'
+          TARGET_AGENT_OS: 'Darwin'
           TARGET_INSTALLER: 'default'
+          TARGET_OS: 'mac'
 
     pool:
       name: $(TARGET_POOL)
-      demands: agent.os -equals $(TARGET_OS)
+      demands: agent.os -equals $(TARGET_AGENT_OS)
 
     steps:
     - task: NodeTool@0
@@ -38,3 +41,10 @@ stages:
         npm run build-i18n:totvs -- --profile
         npm run build -- --targets=$(TARGET_INSTALLER) -LLLL --company=totvs
       displayName: 'npm install and build'
+
+    - task: PublishPipelineArtifact@1
+      displayName: "Publish artifacts"
+      inputs:
+        artifact: 'monitor-$(TARGET_OS)-x64'
+        publishLocation: "pipeline"
+        targetPath: 'target/dist/$(TARGET_OS)-64'
