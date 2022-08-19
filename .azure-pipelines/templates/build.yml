@@ -12,9 +12,9 @@ jobs:
         TARGET_OS: "windows"
         TARGET_FILES: |
           monitor-electron-*-windows-x64.setup.exe
-		  monitor-electron-*-windows-x64.setup.exe.blockmap
-		  monitor-electron-*-windows-x64.zip
-		  *.yml
+          monitor-electron-*-windows-x64.setup.exe.blockmap
+          monitor-electron-*-windows-x64.zip
+          *.yml
       Linux:
         TARGET_POOL: "moving"
         TARGET_AGENT_OS: "Linux"
@@ -33,7 +33,7 @@ jobs:
           monitor-electron-*-mac-x64.dmg
           monitor-electron-*-mac-x64.dmg.blockmap
           monitor-electron-*-mac-x64.zip
-		  *.yml
+          *.yml
 
   pool:
     name: $(TARGET_POOL)
