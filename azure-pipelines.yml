@@ -10,20 +10,30 @@ stages:
     strategy:
       matrix:
         Windows:
-          TARGET_POOL: 'webapp-harpia-pool'
-          TARGET_AGENT_OS: 'Windows_NT'
-          TARGET_INSTALLER: 'nsis,zip'
-          TARGET_OS: 'windows'
+          TARGET_POOL: "webapp-harpia-pool"
+          TARGET_AGENT_OS: "Windows_NT"
+          TARGET_INSTALLER: "nsis,zip"
+          TARGET_OS: "windows"
+          TARGET_FILES: |
+            monitor-electron-*-windows-x64.setup.exe
         Linux:
-          TARGET_POOL: 'moving'
-          TARGET_AGENT_OS: 'Linux'
-          TARGET_INSTALLER: 'deb,rpm,tar.gz'
-          TARGET_OS: 'linux'
+          TARGET_POOL: "moving"
+          TARGET_AGENT_OS: "Linux"
+          TARGET_INSTALLER: "deb,rpm,tar.gz"
+          TARGET_OS: "linux"
+          TARGET_FILES: |
+            monitor-electron-*-linux-x64.tar.gz
+            monitor-electron-*-linux-x64.deb
+            monitor-electron-*-linux-x64.rpm
         Mac:
-          TARGET_POOL: 'webapp-harpia-pool'
-          TARGET_AGENT_OS: 'Darwin'
-          TARGET_INSTALLER: 'default'
-          TARGET_OS: 'mac'
+          TARGET_POOL: "webapp-harpia-pool"
+          TARGET_AGENT_OS: "Darwin"
+          TARGET_INSTALLER: "default"
+          TARGET_OS: "mac"
+          TARGET_FILES: |
+            monitor-electron-*-mac-x64.dmg
+            monitor-electron-*-mac-x64.dmg.blockmap
+            monitor-electron-*-mac-x64.zip
 
     pool:
       name: $(TARGET_POOL)
@@ -32,19 +42,37 @@ stages:
     steps:
     - task: NodeTool@0
       inputs:
-        versionSpec: '16.x'
-      displayName: 'Install Node.js'
+        versionSpec: "16.x"
+      displayName: "Install Node.js"
 
     - script: |
         npm install --registry=https://registry.npmjs.org --unsafe-perm
+      displayName: "npm install"
+
+    - script: |
         npm install --global --registry=https://registry.npmjs.org @totvs/tds-dev-utils typescript
+      displayName: "npm install @totvs/tds-dev-utils"
+
+    - script: |
         npm run build-i18n:totvs -- --profile
+      displayName: "npm build i18n"
+
+    - script: |
         npm run build -- --targets=$(TARGET_INSTALLER) -LLLL --company=totvs
-      displayName: 'npm install and build'
+      displayName: "npm build"
+
+    - task: CopyFiles@2
+      displayName: "Filter artifact files"
+      inputs:
+        SourceFolder: target/dist/$(TARGET_OS)-64
+        Contents: $(TARGET_FILES)
+        TargetFolder: "artifacts"
+        CleanTargetFolder: false
+        OverWrite: true
 
     - task: PublishPipelineArtifact@1
       displayName: "Publish artifacts"
       inputs:
-        artifact: 'monitor-$(TARGET_OS)-x64'
+        artifact: "monitor-$(TARGET_OS)-x64"
         publishLocation: "pipeline"
-        targetPath: 'target/dist/$(TARGET_OS)-64'
+        targetPath: "artifacts"
