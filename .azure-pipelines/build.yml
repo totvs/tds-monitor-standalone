@@ -8,7 +8,7 @@ stages:
   jobs:
   - template: templates/build.yml
     parameters:
-	  company: totvs
+      company: totvs
 
 - stage: NP
   displayName: "NP"
@@ -16,4 +16,4 @@ stages:
   jobs:
   - template: templates/build.yml
     parameters:
-	  company: np
+      company: np
