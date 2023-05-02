@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.25](https://github.com/totvs/tds-monitor-standalone/compare/v0.2.24...v0.2.25) (2023-05-02)
+
 ### [0.2.24](https://github.com/totvs/tds-monitor-standalone/compare/v0.2.21...v0.2.24) (2023-04-28)
 
 ### [0.2.15](https://github.com/totvs/tds-monitor-standalone/compare/v0.2.14...v0.2.15) (2021-07-26)

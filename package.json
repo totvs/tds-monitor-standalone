@@ -1,6 +1,6 @@
 {
   "name": "@totvs/tds-monitor-standalone",
-  "version": "0.2.24",
+  "version": "0.2.25",
   "description": "TDS Monitor",
   "main": "src/main/js/index.js",
   "scripts": {
@@ -17,7 +17,8 @@
     "---MISC---": "",
     "build-i18n:totvs": "tds-build-i18n --nls-folder ./src/main/resources/nls --company totvs --verbose --profile",
     "build-i18n:np": "tds-build-i18n --nls-folder ./src/main/resources/nls  --company np --verbose --profile",
-    "import-i18n": "tds-import-i18n --nls-folder ./src/main/resources/nls --atusx-folder ./atusx --atusx-file tds-totvs-monitor.ts"
+    "import-i18n": "tds-import-i18n --nls-folder ./src/main/resources/nls --atusx-folder ./atusx --atusx-file tds-totvs-monitor.ts",
+    "updProcess": "npm run release & npm run tag"
   },
   "repository": "https://github.com/totvs/tds-monitor-standalone",
   "keywords": [
