@@ -7,7 +7,7 @@ exports.default = async (configuration) => {
 	let args = configuration.computeSignToolArgs(true);
 
 	let pos = args.indexOf('sign');
-	args.splice(pos + 1, 0, '/csp', 'Dinamo HSM Cryptographic Provider', '/kc', 'CodeSigning', '/v');
+	args.splice(pos + 1, 0, '/csp', 'Dinamo HSM Cryptographic Provider', '/kc', 'TOTVS', '/v');
 
 	return new Promise((resolve, reject) => {
 		console.log('SPAWN', `${cmd} ${args.join(' ')}`);
